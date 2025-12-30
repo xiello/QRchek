@@ -119,6 +119,7 @@ export default function Dashboard() {
       setRecords(attendanceData);
       setStats(statsData);
       setEmployees(employeesData);
+      console.log('Loaded employees:', employeesData.map(e => ({ name: e.name, emailVerified: e.emailVerified })));
       applyFilter(attendanceData, selectedEmployee);
     } catch (err: any) {
       console.error('Error loading data:', err);
@@ -442,10 +443,11 @@ export default function Dashboard() {
                     <td>
                       <div className="status-cell">
                         {emp.isAdmin && <span className="badge admin">{sk.admin}</span>}
-                        {emp.emailVerified ? (
+                        {!emp.isAdmin && emp.emailVerified === true && (
                           <span className="badge verified">{sk.verified}</span>
-                        ) : (
-                          <>
+                        )}
+                        {!emp.isAdmin && emp.emailVerified !== true && (
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                             <span className="badge pending">{sk.pendingVerification}</span>
                             <button 
                               className="verify-btn"
@@ -453,7 +455,7 @@ export default function Dashboard() {
                             >
                               ✓ {sk.verify}
                             </button>
-                          </>
+                          </div>
                         )}
                       </div>
                     </td>
