@@ -5,14 +5,24 @@
 echo "🚀 Building AMC Tvoj Coffeeshop Mobile App"
 echo ""
 
-# Check if we're in the right directory
-if [ ! -d "mobile" ]; then
-    echo "❌ Error: mobile directory not found"
-    echo "Please run this script from the project root"
+# Get the absolute path to the script directory
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+MOBILE_DIR="${SCRIPT_DIR}/mobile"
+
+# Check if mobile directory exists
+if [ ! -d "$MOBILE_DIR" ]; then
+    echo "❌ Error: mobile directory not found at $MOBILE_DIR"
     exit 1
 fi
 
-cd mobile
+# Change to mobile directory using absolute path
+cd "$MOBILE_DIR" || {
+    echo "❌ Error: Failed to change to mobile directory"
+    exit 1
+}
+
+echo "📁 Working directory: $(pwd)"
+echo ""
 
 echo "📱 Select build type:"
 echo "1) Preview APK (for testing)"
