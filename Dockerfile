@@ -30,4 +30,6 @@ EXPOSE 3000
 # Set environment and start server
 ENV NODE_ENV=production
 WORKDIR /app/server
+
+# Start command - use array form (no shell, no cd)
 CMD ["node", "dist/server.js"]
