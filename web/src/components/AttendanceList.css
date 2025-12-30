@@ -1,0 +1,72 @@
+.attendance-list {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.attendance-list.empty {
+  padding: 40px;
+  text-align: center;
+  color: #999;
+}
+
+.attendance-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.attendance-list thead {
+  background-color: #f8f9fa;
+}
+
+.attendance-list th {
+  padding: 16px;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.attendance-list td {
+  padding: 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.attendance-list tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.attendance-list tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.employee-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.type-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.type-badge.arrival {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.type-badge.departure {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.time {
+  font-weight: 500;
+  color: #333;
+}
+

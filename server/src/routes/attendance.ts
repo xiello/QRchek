@@ -1,0 +1,209 @@
+import express from 'express';
+import { Request, Response } from 'express';
+import {
+  readAttendance,
+  addAttendance,
+  getAttendanceByEmployee,
+  getLastAttendance,
+  findEmployeeById,
+  updateAttendanceType,
+  findAttendanceById,
+  deleteAttendance
+} from '../models/attendance';
+import jwt from 'jsonwebtoken';
+
+const router = express.Router();
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+
+// Valid QR code value - only this QR code will work for attendance
+const VALID_QR_CODE = process.env.VALID_QR_CODE || 'QRCHEK-2024-COMPANY';
+
+// Cooldown period in milliseconds (1 minute)
+const SCAN_COOLDOWN_MS = 60 * 1000;
+
+// Middleware to verify JWT token
+function authenticateToken(req: Request, res: Response, next: express.NextFunction) {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ error: 'Authentication required' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET) as { id: string; username: string; name: string };
+    (req as any).user = decoded;
+    next();
+  } catch (error) {
+    return res.status(403).json({ error: 'Invalid or expired token' });
+  }
+}
+
+// POST /api/attendance - Record new scan
+router.post('/', authenticateToken, async (req, res) => {
+  try {
+    const user = (req as any).user;
+    const { qrCode } = req.body;
+
+    if (!qrCode) {
+      return res.status(400).json({ error: 'QR code is required' });
+    }
+
+    // Validate QR code
+    if (qrCode !== VALID_QR_CODE) {
+      return res.status(400).json({ 
+        error: 'Invalid QR code. Please scan the company QR code.',
+        invalidQR: true
+      });
+    }
+
+    const employee = await findEmployeeById(user.id);
+    if (!employee) {
+      return res.status(404).json({ error: 'Employee not found' });
+    }
+
+    // Get last attendance record
+    const lastRecord = await getLastAttendance(user.id);
+
+    // Check cooldown
+    if (lastRecord) {
+      const lastScanTime = new Date(lastRecord.timestamp).getTime();
+      const now = Date.now();
+      const timeSinceLastScan = now - lastScanTime;
+      
+      if (timeSinceLastScan < SCAN_COOLDOWN_MS) {
+        const remainingSeconds = Math.ceil((SCAN_COOLDOWN_MS - timeSinceLastScan) / 1000);
+        return res.status(429).json({
+          error: `Please wait ${remainingSeconds} seconds before scanning again`,
+          cooldown: true,
+          remainingSeconds
+        });
+      }
+    }
+
+    // Determine type
+    const type: 'arrival' | 'departure' = 
+      !lastRecord ? 'arrival' : (lastRecord.type === 'arrival' ? 'departure' : 'arrival');
+
+    const record = await addAttendance({
+      employeeName: employee.name,
+      employeeId: employee.id,
+      timestamp: new Date().toISOString(),
+      type,
+      qrCode
+    });
+
+    res.json({
+      success: true,
+      record
+    });
+  } catch (error) {
+    console.error('Error recording attendance:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// GET /api/attendance - Get all attendance records
+router.get('/', async (req, res) => {
+  try {
+    const records = await readAttendance();
+    res.json(records);
+  } catch (error) {
+    console.error('Error fetching attendance:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// GET /api/attendance/me - Get records for logged-in employee
+router.get('/me', authenticateToken, async (req, res) => {
+  try {
+    const user = (req as any).user;
+    const records = await getAttendanceByEmployee(user.id);
+    res.json(records);
+  } catch (error) {
+    console.error('Error fetching attendance:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// GET /api/attendance/:employeeId - Get records for specific employee
+router.get('/:employeeId', async (req, res) => {
+  try {
+    const { employeeId } = req.params;
+    const records = await getAttendanceByEmployee(employeeId);
+    res.json(records);
+  } catch (error) {
+    console.error('Error fetching attendance:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// PUT /api/attendance/:recordId - Update attendance type
+router.put('/:recordId', authenticateToken, async (req, res) => {
+  try {
+    const user = (req as any).user;
+    const { recordId } = req.params;
+    const { type } = req.body;
+
+    if (!type || (type !== 'arrival' && type !== 'departure')) {
+      return res.status(400).json({ error: 'Invalid type. Must be "arrival" or "departure"' });
+    }
+
+    const record = await findAttendanceById(recordId);
+    if (!record) {
+      return res.status(404).json({ error: 'Record not found' });
+    }
+
+    if (record.employeeId !== user.id) {
+      return res.status(403).json({ error: 'You can only edit your own records' });
+    }
+
+    const updatedRecord = await updateAttendanceType(recordId, type);
+    if (!updatedRecord) {
+      return res.status(500).json({ error: 'Failed to update record' });
+    }
+
+    res.json({
+      success: true,
+      record: updatedRecord
+    });
+  } catch (error) {
+    console.error('Error updating attendance:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// DELETE /api/attendance/:recordId - Delete attendance record
+router.delete('/:recordId', authenticateToken, async (req, res) => {
+  try {
+    const user = (req as any).user;
+    const { recordId } = req.params;
+
+    const record = await findAttendanceById(recordId);
+    if (!record) {
+      return res.status(404).json({ error: 'Record not found' });
+    }
+
+    const employee = await findEmployeeById(user.id);
+    const isAdmin = employee && employee.isAdmin === true;
+
+    if (record.employeeId !== user.id && !isAdmin) {
+      return res.status(403).json({ error: 'You can only delete your own records' });
+    }
+
+    const deleted = await deleteAttendance(recordId);
+    if (!deleted) {
+      return res.status(500).json({ error: 'Failed to delete record' });
+    }
+
+    res.json({
+      success: true,
+      message: 'Record deleted successfully'
+    });
+  } catch (error) {
+    console.error('Error deleting attendance:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+export default router;

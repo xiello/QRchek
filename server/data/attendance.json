@@ -1,0 +1,170 @@
+[
+  {
+    "id": "1767002881235xebr953e2",
+    "employeeName": "Admin User",
+    "employeeId": "1",
+    "timestamp": "2025-12-29T10:08:01.235Z",
+    "type": "departure",
+    "qrCode": "https://yo.com/"
+  },
+  {
+    "id": "17670028899067pn2eatay",
+    "employeeName": "Admin User",
+    "employeeId": "1",
+    "timestamp": "2025-12-29T10:08:09.906Z",
+    "type": "arrival",
+    "qrCode": "https://yo.com/"
+  },
+  {
+    "id": "1767002921134qi4mk2z46",
+    "employeeName": "Admin User",
+    "employeeId": "1",
+    "timestamp": "2025-12-29T10:08:41.134Z",
+    "type": "departure",
+    "qrCode": "https://yo.com/"
+  },
+  {
+    "id": "1767002924926867yt5c8t",
+    "employeeName": "Admin User",
+    "employeeId": "1",
+    "timestamp": "2025-12-29T10:08:44.926Z",
+    "type": "arrival",
+    "qrCode": "https://yo.com/"
+  },
+  {
+    "id": "1767002942512u56rige52",
+    "employeeName": "Admin User",
+    "employeeId": "1",
+    "timestamp": "2025-12-29T10:09:02.512Z",
+    "type": "departure",
+    "qrCode": "https://yo.com/"
+  },
+  {
+    "id": "1767003133538ff34aru2t",
+    "employeeName": "Admin User",
+    "employeeId": "1",
+    "timestamp": "2025-12-29T10:12:13.538Z",
+    "type": "arrival",
+    "qrCode": "exp://192.168.0.111:8082"
+  },
+  {
+    "id": "1767003160010swbhkvbof",
+    "employeeName": "Admin User",
+    "employeeId": "1",
+    "timestamp": "2025-12-29T10:12:40.010Z",
+    "type": "departure",
+    "qrCode": "https://yo.com/"
+  },
+  {
+    "id": "1767004870604rxsqzcr09",
+    "employeeName": "Admin User",
+    "employeeId": "1",
+    "timestamp": "2025-12-29T10:41:10.605Z",
+    "type": "arrival",
+    "qrCode": "QRCHEK-2024-COMPANY"
+  },
+  {
+    "id": "17670048766027fi00ws9q",
+    "employeeName": "Admin User",
+    "employeeId": "1",
+    "timestamp": "2025-12-29T10:41:16.602Z",
+    "type": "departure",
+    "qrCode": "QRCHEK-2024-COMPANY"
+  },
+  {
+    "id": "1767005730233vehpk4qso",
+    "employeeName": "petriky",
+    "employeeId": "b365786c-035d-4326-85a6-bb3bad6eaf92",
+    "timestamp": "2025-12-29T10:55:30.233Z",
+    "type": "arrival",
+    "qrCode": "QRCHEK-2024-COMPANY"
+  },
+  {
+    "id": "1767005736891oh90ln2o4",
+    "employeeName": "petriky",
+    "employeeId": "b365786c-035d-4326-85a6-bb3bad6eaf92",
+    "timestamp": "2025-12-29T10:55:36.891Z",
+    "type": "departure",
+    "qrCode": "QRCHEK-2024-COMPANY"
+  },
+  {
+    "id": "1767005764133oof0sqlu9",
+    "employeeName": "petriky",
+    "employeeId": "b365786c-035d-4326-85a6-bb3bad6eaf92",
+    "timestamp": "2025-12-29T10:56:04.133Z",
+    "type": "arrival",
+    "qrCode": "QRCHEK-2024-COMPANY"
+  },
+  {
+    "id": "17670057702202szwg0uj9",
+    "employeeName": "petriky",
+    "employeeId": "b365786c-035d-4326-85a6-bb3bad6eaf92",
+    "timestamp": "2025-12-29T10:56:10.220Z",
+    "type": "departure",
+    "qrCode": "QRCHEK-2024-COMPANY"
+  },
+  {
+    "id": "1767011590852y3ftg0cag",
+    "employeeName": "petriky",
+    "employeeId": "b365786c-035d-4326-85a6-bb3bad6eaf92",
+    "timestamp": "2025-12-29T12:33:10.852Z",
+    "type": "arrival",
+    "qrCode": "QRCHEK-2024-COMPANY"
+  },
+  {
+    "id": "1767011597301rw9k709nl",
+    "employeeName": "petriky",
+    "employeeId": "b365786c-035d-4326-85a6-bb3bad6eaf92",
+    "timestamp": "2025-12-29T12:33:17.301Z",
+    "type": "departure",
+    "qrCode": "QRCHEK-2024-COMPANY"
+  },
+  {
+    "id": "1767011846880fv5iabmif",
+    "employeeName": "petriky",
+    "employeeId": "b365786c-035d-4326-85a6-bb3bad6eaf92",
+    "timestamp": "2025-12-29T12:37:26.880Z",
+    "type": "arrival",
+    "qrCode": "QRCHEK-2024-COMPANY"
+  },
+  {
+    "id": "1767012579722h7dgioxpd",
+    "employeeName": "Petriky",
+    "employeeId": "1e7374b7-b0ab-4278-be4a-ad74fdc1abf6",
+    "timestamp": "2025-12-29T12:49:39.722Z",
+    "type": "arrival",
+    "qrCode": "QRCHEK-2024-COMPANY"
+  },
+  {
+    "id": "1767012669454sj7cwnzyb",
+    "employeeName": "Petriky",
+    "employeeId": "1e7374b7-b0ab-4278-be4a-ad74fdc1abf6",
+    "timestamp": "2025-12-29T12:51:09.454Z",
+    "type": "departure",
+    "qrCode": "QRCHEK-2024-COMPANY"
+  },
+  {
+    "id": "1767012819495q9a3r1uz1",
+    "employeeName": "Petriky",
+    "employeeId": "1e7374b7-b0ab-4278-be4a-ad74fdc1abf6",
+    "timestamp": "2025-12-29T12:53:39.495Z",
+    "type": "arrival",
+    "qrCode": "QRCHEK-2024-COMPANY"
+  },
+  {
+    "id": "1767014820900w34ai8fsz",
+    "employeeName": "Petriky",
+    "employeeId": "1e7374b7-b0ab-4278-be4a-ad74fdc1abf6",
+    "timestamp": "2025-12-29T13:27:00.900Z",
+    "type": "departure",
+    "qrCode": "QRCHEK-2024-COMPANY"
+  },
+  {
+    "id": "1767014930499g2rnjpova",
+    "employeeName": "Petriky",
+    "employeeId": "1e7374b7-b0ab-4278-be4a-ad74fdc1abf6",
+    "timestamp": "2025-12-29T13:28:50.499Z",
+    "type": "arrival",
+    "qrCode": "QRCHEK-2024-COMPANY"
+  }
+]

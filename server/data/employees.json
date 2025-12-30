@@ -1,0 +1,34 @@
+[
+  {
+    "id": "1",
+    "username": "admin",
+    "email": "admin@example.com",
+    "password": "$2b$10$SeXliOhN4cv0277Q0y1FK.p8WD1qD5ZIKcqhO8TOb5HXCQQTbCMYO",
+    "name": "Admin User",
+    "emailVerified": true,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "isAdmin": true,
+    "hourlyRate": 5
+  },
+  {
+    "id": "2",
+    "username": "employee1",
+    "email": "employee1@example.com",
+    "password": "$2b$10$SeXliOhN4cv0277Q0y1FK.p8WD1qD5ZIKcqhO8TOb5HXCQQTbCMYO",
+    "name": "Employee One",
+    "emailVerified": true,
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "isAdmin": false,
+    "hourlyRate": 5
+  },
+  {
+    "id": "1e7374b7-b0ab-4278-be4a-ad74fdc1abf6",
+    "username": "petriky",
+    "email": "petriky@proton.me",
+    "password": "$2b$10$YR7ytLTmtaxa/GcPcXwPfO.8u..NLkAs9DlXz9hbH0/6O1dJwJCLa",
+    "name": "Petriky",
+    "emailVerified": true,
+    "createdAt": "2025-12-29T12:48:56.685Z",
+    "hourlyRate": 100
+  }
+]

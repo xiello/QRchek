@@ -1,0 +1,116 @@
+import axios from 'axios';
+import { AttendanceRecord } from '../types/attendance';
+
+// In production, use relative URLs (same origin)
+// In development, use localhost
+const API_BASE_URL = import.meta.env.PROD ? '' : 'http://localhost:3000';
+
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Add token to requests
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('admin_token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+export interface LoginResponse {
+  token: string;
+  employee: {
+    id: string;
+    name: string;
+    email: string;
+    isAdmin: boolean;
+  };
+}
+
+export interface EmployeeStats {
+  hours: number;
+  payment: number;
+}
+
+export interface Employee {
+  id: string;
+  name: string;
+  email: string;
+  isAdmin: boolean;
+  hourlyRate: number;
+  emailVerified: boolean;
+  createdAt: string;
+  today: EmployeeStats;
+  week: EmployeeStats;
+  month: EmployeeStats;
+}
+
+export interface Stats {
+  employees: {
+    total: number;
+    verified: number;
+  };
+  today: {
+    scans: number;
+    hours: number;
+    payment: number;
+  };
+  week: {
+    scans: number;
+    hours: number;
+    payment: number;
+  };
+  month: {
+    scans: number;
+    hours: number;
+    payment: number;
+  };
+  recentActivity: AttendanceRecord[];
+}
+
+export const authAPI = {
+  login: async (email: string, password: string): Promise<LoginResponse> => {
+    const response = await api.post('/api/auth/login', { email, password });
+    return response.data;
+  },
+};
+
+export const attendanceAPI = {
+  getAllAttendance: async (): Promise<AttendanceRecord[]> => {
+    const response = await api.get('/api/attendance');
+    return response.data;
+  },
+};
+
+export const adminAPI = {
+  getEmployees: async (): Promise<Employee[]> => {
+    const response = await api.get('/api/admin/employees');
+    return response.data;
+  },
+  
+  updateEmployee: async (id: string, data: { hourlyRate?: number; isAdmin?: boolean }) => {
+    const response = await api.put(`/api/admin/employees/${id}`, data);
+    return response.data;
+  },
+  
+  getStats: async (): Promise<Stats> => {
+    const response = await api.get('/api/admin/stats');
+    return response.data;
+  },
+  
+  getExportURL: (period?: string, employeeId?: string, type?: string) => {
+    let url = `${API_BASE_URL}/api/admin/export`;
+    const params = new URLSearchParams();
+    if (period) params.append('period', period);
+    if (employeeId) params.append('employeeId', employeeId);
+    if (type) params.append('type', type);
+    if (params.toString()) url += `?${params.toString()}`;
+    return url;
+  }
+};
+
+export default api;

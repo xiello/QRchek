@@ -1,0 +1,27 @@
+.employee-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.employee-filter label {
+  font-weight: 600;
+  color: #333;
+}
+
+.employee-filter select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: #fff;
+  cursor: pointer;
+  min-width: 200px;
+}
+
+.employee-filter select:focus {
+  outline: none;
+  border-color: #007AFF;
+}
+
