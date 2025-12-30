@@ -7,21 +7,30 @@
 
 .employee-filter label {
   font-weight: 600;
-  color: #333;
+  color: var(--amc-text);
+  font-size: 14px;
 }
 
 .employee-filter select {
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  padding: 10px 14px;
+  border: 1px solid var(--amc-border);
+  border-radius: 8px;
   font-size: 14px;
-  background-color: #fff;
+  background-color: var(--amc-surface);
+  color: var(--amc-text);
   cursor: pointer;
   min-width: 200px;
+  transition: all 0.2s;
+}
+
+.employee-filter select:hover {
+  border-color: var(--amc-border-light);
+  background-color: var(--amc-surface-light);
 }
 
 .employee-filter select:focus {
   outline: none;
-  border-color: #007AFF;
+  border-color: var(--amc-red);
+  background-color: var(--amc-surface-light);
 }
 

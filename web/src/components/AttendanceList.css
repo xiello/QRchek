@@ -1,14 +1,22 @@
 .attendance-list {
-  background: white;
-  border-radius: 8px;
+  background: var(--amc-surface);
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--amc-border);
 }
 
 .attendance-list.empty {
   padding: 40px;
   text-align: center;
-  color: #999;
+  color: var(--amc-text-secondary);
+  background: var(--amc-surface);
+  border-radius: 12px;
+  border: 1px solid var(--amc-border);
+}
+
+.attendance-list.empty p {
+  margin: 0;
+  font-size: 14px;
 }
 
 .attendance-list table {
@@ -17,24 +25,28 @@
 }
 
 .attendance-list thead {
-  background-color: #f8f9fa;
+  background-color: var(--amc-surface-light);
 }
 
 .attendance-list th {
   padding: 16px;
   text-align: left;
   font-weight: 600;
-  color: #333;
-  border-bottom: 2px solid #e0e0e0;
+  color: var(--amc-text-secondary);
+  border-bottom: 1px solid var(--amc-border);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .attendance-list td {
   padding: 16px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--amc-border);
+  color: var(--amc-text);
 }
 
 .attendance-list tbody tr:hover {
-  background-color: #f8f9fa;
+  background-color: var(--amc-surface-light);
 }
 
 .attendance-list tbody tr:last-child td {
@@ -43,30 +55,31 @@
 
 .employee-name {
   font-weight: 500;
-  color: #333;
+  color: var(--amc-text);
 }
 
 .type-badge {
   display: inline-block;
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .type-badge.arrival {
-  background-color: #e8f5e9;
-  color: #2e7d32;
+  background-color: rgba(76, 175, 80, 0.15);
+  color: var(--amc-success);
 }
 
 .type-badge.departure {
-  background-color: #ffebee;
-  color: #c62828;
+  background-color: rgba(227, 27, 35, 0.15);
+  color: var(--amc-red);
 }
 
 .time {
   font-weight: 500;
-  color: #333;
+  color: var(--amc-text);
 }
 
