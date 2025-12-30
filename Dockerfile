@@ -27,6 +27,7 @@ RUN cd server && npm run build
 # Expose port
 EXPOSE 3000
 
-# Start server (WORKDIR is already set to /app, so we need to cd to server)
+# Set environment and start server
+ENV NODE_ENV=production
 WORKDIR /app/server
-CMD ["sh", "-c", "npm start"]
+CMD ["node", "dist/server.js"]
