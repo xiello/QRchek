@@ -439,22 +439,23 @@ export default function Dashboard() {
                       <div className="hours">{emp.month?.hours || 0}h</div>
                       <div className="payment">€{emp.month?.payment || 0}</div>
                     </td>
-                    <td className="status-cell">
-                      {emp.isAdmin && <span className="badge admin">{sk.admin}</span>}
-                      {emp.emailVerified ? (
-                        <span className="badge verified">{sk.verified}</span>
-                      ) : (
-                        <>
-                          <span className="badge pending">{sk.pendingVerification}</span>
-                          <button 
-                            className="verify-btn"
-                            onClick={() => handleVerifyEmployee(emp.id)}
-                            title="Overiť zamestnanca"
-                          >
-                            {sk.verify}
-                          </button>
-                        </>
-                      )}
+                    <td>
+                      <div className="status-cell">
+                        {emp.isAdmin && <span className="badge admin">{sk.admin}</span>}
+                        {emp.emailVerified ? (
+                          <span className="badge verified">{sk.verified}</span>
+                        ) : (
+                          <>
+                            <span className="badge pending">{sk.pendingVerification}</span>
+                            <button 
+                              className="verify-btn"
+                              onClick={() => handleVerifyEmployee(emp.id)}
+                            >
+                              ✓ {sk.verify}
+                            </button>
+                          </>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}
