@@ -85,7 +85,7 @@ router.get('/employees', async (req, res) => {
       email: emp.email,
       isAdmin: emp.isAdmin || false,
       hourlyRate: emp.hourlyRate || 5,
-      emailVerified: emp.emailVerified,
+      emailVerified: emp.emailVerified, // This now means "admin verified"
       createdAt: emp.createdAt,
       today: todayStats[emp.id] || { hours: 0, payment: 0 },
       week: weekStats[emp.id] || { hours: 0, payment: 0 },
@@ -103,14 +103,14 @@ router.get('/employees', async (req, res) => {
 router.put('/employees/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { hourlyRate, isAdmin } = req.body;
+    const { hourlyRate, isAdmin, emailVerified } = req.body;
 
     const employee = await findEmployeeById(id);
     if (!employee) {
       return res.status(404).json({ error: 'Employee not found' });
     }
 
-    const updates: { hourlyRate?: number; isAdmin?: boolean } = {};
+    const updates: { hourlyRate?: number; isAdmin?: boolean; emailVerified?: boolean } = {};
     
     if (typeof hourlyRate === 'number' && hourlyRate >= 0) {
       updates.hourlyRate = hourlyRate;
@@ -118,6 +118,11 @@ router.put('/employees/:id', async (req, res) => {
     
     if (typeof isAdmin === 'boolean') {
       updates.isAdmin = isAdmin;
+    }
+
+    // Allow admin to verify employees
+    if (typeof emailVerified === 'boolean') {
+      updates.emailVerified = emailVerified;
     }
 
     const updated = await updateEmployee(id, updates);
@@ -132,11 +137,45 @@ router.put('/employees/:id', async (req, res) => {
         name: updated.name,
         email: updated.email,
         isAdmin: updated.isAdmin || false,
-        hourlyRate: updated.hourlyRate || 5
+        hourlyRate: updated.hourlyRate || 5,
+        emailVerified: updated.emailVerified
       }
     });
   } catch (error) {
     console.error('Error updating employee:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// POST /api/admin/employees/:id/verify - Verify an employee (admin approval)
+router.post('/employees/:id/verify', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const employee = await findEmployeeById(id);
+    if (!employee) {
+      return res.status(404).json({ error: 'Employee not found' });
+    }
+
+    const updated = await updateEmployee(id, { emailVerified: true });
+    if (!updated) {
+      return res.status(500).json({ error: 'Failed to verify employee' });
+    }
+
+    console.log(`✅ Admin verified employee: ${updated.email}`);
+
+    res.json({
+      success: true,
+      message: 'Employee verified successfully',
+      employee: {
+        id: updated.id,
+        name: updated.name,
+        email: updated.email,
+        emailVerified: updated.emailVerified
+      }
+    });
+  } catch (error) {
+    console.error('Error verifying employee:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
@@ -185,7 +224,8 @@ router.get('/stats', async (req, res) => {
     res.json({
       employees: {
         total: employees.length,
-        verified: employees.filter(e => e.emailVerified).length
+        verified: employees.filter(e => e.emailVerified).length,
+        pending: employees.filter(e => !e.emailVerified && !e.isAdmin).length
       },
       today: {
         scans: todayRecords.length,

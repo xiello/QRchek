@@ -53,6 +53,7 @@ export interface Stats {
   employees: {
     total: number;
     verified: number;
+    pending: number;
   };
   today: {
     scans: number;
@@ -92,8 +93,13 @@ export const adminAPI = {
     return response.data;
   },
   
-  updateEmployee: async (id: string, data: { hourlyRate?: number; isAdmin?: boolean }) => {
+  updateEmployee: async (id: string, data: { hourlyRate?: number; isAdmin?: boolean; emailVerified?: boolean }) => {
     const response = await api.put(`/api/admin/employees/${id}`, data);
+    return response.data;
+  },
+  
+  verifyEmployee: async (id: string) => {
+    const response = await api.post(`/api/admin/employees/${id}/verify`);
     return response.data;
   },
   

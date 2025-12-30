@@ -534,6 +534,56 @@
   color: var(--amc-success);
 }
 
+.badge.pending {
+  background: rgba(255, 193, 7, 0.15);
+  color: #FFC107;
+  margin-right: 8px;
+}
+
+.verify-btn {
+  padding: 6px 12px;
+  background: var(--amc-red);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.verify-btn:hover {
+  background: var(--amc-red-dark);
+}
+
+.status-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pending-alert {
+  background: rgba(255, 193, 7, 0.15);
+  border: 1px solid #FFC107;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #FFC107;
+}
+
+.pending-alert button {
+  padding: 8px 16px;
+  background: var(--amc-red);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .dashboard {

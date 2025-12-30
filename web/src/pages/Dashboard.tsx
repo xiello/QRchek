@@ -44,6 +44,9 @@ const sk = {
   status: 'Stav',
   admin: 'Admin',
   verified: 'Overený',
+  pending: 'Čakajúci',
+  verify: 'Overiť',
+  pendingVerification: 'Čaká na overenie',
   
   loading: 'Načítava sa...',
   retry: 'Skúsiť znova',
@@ -143,6 +146,17 @@ export default function Dashboard() {
       await loadData();
     } catch (err) {
       console.error('Error updating rate:', err);
+    }
+  };
+
+  const handleVerifyEmployee = async (empId: string) => {
+    try {
+      await adminAPI.verifyEmployee(empId);
+      await loadData();
+      alert('Zamestnanec bol úspešne overený');
+    } catch (err) {
+      console.error('Error verifying employee:', err);
+      alert('Chyba pri overovaní zamestnanca');
     }
   };
 
@@ -283,6 +297,12 @@ export default function Dashboard() {
 
         {activeTab === 'overview' && stats && (
           <>
+            {stats.employees.pending > 0 && (
+              <div className="pending-alert">
+                <strong>{stats.employees.pending} zamestnancov čaká na overenie</strong>
+                <button onClick={() => setActiveTab('employees')}>Zobraziť</button>
+              </div>
+            )}
             <div className="stats-section">
               <h2>{sk.today}</h2>
               <div className="stats">
@@ -421,7 +441,20 @@ export default function Dashboard() {
                     </td>
                     <td className="status-cell">
                       {emp.isAdmin && <span className="badge admin">{sk.admin}</span>}
-                      {emp.emailVerified && <span className="badge verified">{sk.verified}</span>}
+                      {emp.emailVerified ? (
+                        <span className="badge verified">{sk.verified}</span>
+                      ) : (
+                        <>
+                          <span className="badge pending">{sk.pendingVerification}</span>
+                          <button 
+                            className="verify-btn"
+                            onClick={() => handleVerifyEmployee(emp.id)}
+                            title="Overiť zamestnanca"
+                          >
+                            {sk.verify}
+                          </button>
+                        </>
+                      )}
                     </td>
                   </tr>
                 ))}
