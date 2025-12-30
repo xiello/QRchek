@@ -19,4 +19,4 @@ cmds = [
 ]
 
 [start]
-cmd = "cd server && npm start"
+cmd = "sh -c 'cd server && npm start'"
