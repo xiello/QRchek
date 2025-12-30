@@ -10,6 +10,18 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const isProduction = process.env.NODE_ENV === 'production';
 
+// Request logging middleware
+app.use((req, res, next) => {
+  const timestamp = new Date().toISOString();
+  console.log(`[${timestamp}] ${req.method} ${req.path}`);
+  if (req.body && Object.keys(req.body).length > 0) {
+    const bodyCopy = { ...req.body };
+    if (bodyCopy.password) bodyCopy.password = '***';
+    console.log('  Body:', JSON.stringify(bodyCopy));
+  }
+  next();
+});
+
 // Log environment on startup
 console.log('='.repeat(50));
 console.log('🚀 AMC Tvoj Coffeeshop Server Starting...');
