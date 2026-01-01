@@ -71,6 +71,9 @@ export default function Dashboard() {
   const [pendingConfirmations, setPendingConfirmations] = useState<PendingConfirmation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [resettingPasswordFor, setResettingPasswordFor] = useState<string | null>(null);
+  const [newPassword, setNewPassword] = useState('');
+  const [resetPasswordError, setResetPasswordError] = useState('');
 
   useEffect(() => {
     const token = localStorage.getItem('admin_token');
@@ -164,6 +167,24 @@ export default function Dashboard() {
     } catch (err) {
       console.error('Error verifying employee:', err);
       alert('Chyba pri overovaní zamestnanca');
+    }
+  };
+
+  const handleResetPassword = async (employeeId: string) => {
+    if (!newPassword || newPassword.length < 6) {
+      setResetPasswordError('Heslo musí mať aspoň 6 znakov');
+      return;
+    }
+
+    try {
+      setResetPasswordError('');
+      await adminAPI.resetPassword(employeeId, newPassword);
+      alert('Heslo bolo úspešne zmenené');
+      setResettingPasswordFor(null);
+      setNewPassword('');
+    } catch (err: any) {
+      console.error('Error resetting password:', err);
+      setResetPasswordError(err.response?.data?.error || 'Chyba pri zmene hesla');
     }
   };
 
@@ -459,6 +480,7 @@ export default function Dashboard() {
                   <th>{sk.thisWeek}</th>
                   <th>{sk.thisMonth}</th>
                   <th>{sk.status}</th>
+                  <th>Akcie</th>
                 </tr>
               </thead>
               <tbody>
@@ -506,6 +528,66 @@ export default function Dashboard() {
                           </div>
                         )}
                       </div>
+                    </td>
+                    <td>
+                      {resettingPasswordFor === emp.id ? (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', minWidth: '200px' }}>
+                          <input
+                            type="password"
+                            placeholder="Nové heslo (min. 6 znakov)"
+                            value={newPassword}
+                            onChange={(e) => {
+                              setNewPassword(e.target.value);
+                              setResetPasswordError('');
+                            }}
+                            style={{ padding: '6px 10px', borderRadius: '4px', border: '1px solid #444', background: '#1a1a1a', color: '#fff' }}
+                          />
+                          {resetPasswordError && (
+                            <div style={{ color: '#E31B23', fontSize: '12px' }}>{resetPasswordError}</div>
+                          )}
+                          <div style={{ display: 'flex', gap: '8px' }}>
+                            <button
+                              className="verify-btn"
+                              onClick={() => handleResetPassword(emp.id)}
+                              style={{ flex: 1 }}
+                            >
+                              ✓ Uložiť
+                            </button>
+                            <button
+                              onClick={() => {
+                                setResettingPasswordFor(null);
+                                setNewPassword('');
+                                setResetPasswordError('');
+                              }}
+                              style={{ 
+                                padding: '6px 12px', 
+                                background: '#444', 
+                                color: '#fff', 
+                                border: 'none', 
+                                borderRadius: '4px', 
+                                cursor: 'pointer' 
+                              }}
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => setResettingPasswordFor(emp.id)}
+                          style={{
+                            padding: '6px 12px',
+                            background: '#E31B23',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            fontSize: '12px'
+                          }}
+                        >
+                          🔑 Resetovať heslo
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}
