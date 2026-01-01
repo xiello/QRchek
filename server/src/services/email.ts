@@ -16,15 +16,24 @@ const getAppUrl = (): string => {
 };
 
 // Create reusable transporter
-const transporter = nodemailer.createTransport({
-  host: SMTP_HOST,
-  port: SMTP_PORT,
-  secure: SMTP_PORT === 465,
-  auth: {
-    user: SMTP_USER,
-    pass: SMTP_PASS,
-  },
-});
+// For Gmail, use service option; for others, use host/port
+const transporter = SMTP_HOST.includes('gmail.com')
+  ? nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: SMTP_USER,
+        pass: SMTP_PASS,
+      },
+    })
+  : nodemailer.createTransport({
+      host: SMTP_HOST,
+      port: SMTP_PORT,
+      secure: SMTP_PORT === 465, // true for 465, false for other ports
+      auth: {
+        user: SMTP_USER,
+        pass: SMTP_PASS,
+      },
+    });
 
 // Check if email is configured
 export function isEmailConfigured(): boolean {
@@ -129,7 +138,8 @@ export async function sendPasswordResetEmail(
   resetToken: string
 ): Promise<boolean> {
   const APP_URL = getAppUrl();
-  const resetLink = `${APP_URL}/reset-password?token=${resetToken}`;
+  // Use the correct route: /api/auth/reset-password/:token
+  const resetLink = `${APP_URL}/api/auth/reset-password/${resetToken}`;
 
   const mailOptions = {
     from: `"AMC Tvoj Coffeeshop" <${FROM_EMAIL}>`,
@@ -202,15 +212,26 @@ Tím AMC Tvoj Coffeeshop
       console.log(`To: ${toEmail}`);
       console.log(`Subject: ${mailOptions.subject}`);
       console.log(`Reset Link: ${resetLink}`);
+      console.log(`SMTP_HOST: ${SMTP_HOST}`);
+      console.log(`SMTP_PORT: ${SMTP_PORT}`);
+      console.log(`SMTP_USER: ${SMTP_USER ? 'SET' : 'NOT SET'}`);
+      console.log(`SMTP_PASS: ${SMTP_PASS ? 'SET' : 'NOT SET'}`);
       console.log('='.repeat(60));
       return true;
     }
 
-    await transporter.sendMail(mailOptions);
-    console.log(`Password reset email sent to ${toEmail}`);
+    console.log(`📧 Attempting to send password reset email to ${toEmail} via ${SMTP_HOST}:${SMTP_PORT}`);
+    const result = await transporter.sendMail(mailOptions);
+    console.log(`✅ Password reset email sent successfully to ${toEmail}`);
+    console.log(`   Message ID: ${result.messageId}`);
     return true;
-  } catch (error) {
-    console.error('Error sending password reset email:', error);
+  } catch (error: any) {
+    console.error('❌ Error sending password reset email:', error);
+    console.error('   Error code:', error.code);
+    console.error('   Error message:', error.message);
+    if (error.response) {
+      console.error('   SMTP Response:', error.response);
+    }
     return false;
   }
 }
