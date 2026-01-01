@@ -24,6 +24,10 @@ const transporter = SMTP_HOST.includes('gmail.com')
         user: SMTP_USER,
         pass: SMTP_PASS,
       },
+      // Add connection timeout
+      connectionTimeout: 10000, // 10 seconds
+      greetingTimeout: 10000,
+      socketTimeout: 10000,
     })
   : nodemailer.createTransport({
       host: SMTP_HOST,
@@ -33,6 +37,10 @@ const transporter = SMTP_HOST.includes('gmail.com')
         user: SMTP_USER,
         pass: SMTP_PASS,
       },
+      // Add connection timeout
+      connectionTimeout: 10000, // 10 seconds
+      greetingTimeout: 10000,
+      socketTimeout: 10000,
     });
 
 // Check if email is configured
@@ -221,10 +229,26 @@ Tím AMC Tvoj Coffeeshop
     }
 
     console.log(`📧 Attempting to send password reset email to ${toEmail} via ${SMTP_HOST}:${SMTP_PORT}`);
-    const result = await transporter.sendMail(mailOptions);
-    console.log(`✅ Password reset email sent successfully to ${toEmail}`);
-    console.log(`   Message ID: ${result.messageId}`);
-    return true;
+    console.log(`   Using SMTP_USER: ${SMTP_USER}`);
+    
+    // Add timeout wrapper (10 seconds max)
+    const sendPromise = transporter.sendMail(mailOptions);
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      setTimeout(() => reject(new Error('Email send timeout after 10 seconds')), 10000);
+    });
+    
+    try {
+      const result = await Promise.race([sendPromise, timeoutPromise]);
+      console.log(`✅ Password reset email sent successfully to ${toEmail}`);
+      console.log(`   Message ID: ${result.messageId}`);
+      return true;
+    } catch (timeoutError: any) {
+      if (timeoutError.message?.includes('timeout')) {
+        console.error(`⏱️ Email send timed out after 10 seconds to ${toEmail}`);
+        throw timeoutError;
+      }
+      throw timeoutError;
+    }
   } catch (error: any) {
     console.error('❌ Error sending password reset email:', error);
     console.error('   Error code:', error.code);

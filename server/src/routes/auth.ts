@@ -130,18 +130,21 @@ router.post('/forgot-password', async (req, res) => {
       verificationTokenExpires: resetTokenExpires.toISOString()
     });
 
-    // Send reset email
-    try {
-      const emailSent = await sendPasswordResetEmail(employee.email, employee.name, resetToken);
-      if (emailSent) {
-        console.log('✅ Password reset email sent successfully to:', email);
-      } else {
-        console.error('❌ Failed to send password reset email to:', email);
-      }
-    } catch (emailError) {
-      console.error('❌ Error sending password reset email:', emailError);
-      // Still return success to prevent email enumeration
-    }
+    // Send reset email (non-blocking - don't wait for it)
+    sendPasswordResetEmail(employee.email, employee.name, resetToken)
+      .then((emailSent) => {
+        if (emailSent) {
+          console.log('✅ Password reset email sent successfully to:', email);
+        } else {
+          console.error('❌ Failed to send password reset email to:', email);
+        }
+      })
+      .catch((emailError) => {
+        console.error('❌ Error sending password reset email:', emailError);
+      });
+    
+    // Return immediately - don't wait for email
+    console.log('✅ Password reset token generated and stored for:', email);
 
     res.json({ 
       message: 'Ak účet s týmto emailom existuje, odoslali sme vám email s inštrukciami na obnovenie hesla.' 
