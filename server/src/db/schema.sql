@@ -22,6 +22,8 @@ CREATE TABLE IF NOT EXISTS attendance (
     employee_name VARCHAR(255) NOT NULL,
     type VARCHAR(20) NOT NULL CHECK (type IN ('arrival', 'departure')),
     timestamp TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    auto_generated BOOLEAN DEFAULT FALSE,
+    confirmed BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 

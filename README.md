@@ -143,6 +143,8 @@ eas build --platform ios      # For iOS
 | `SMTP_USER` | SMTP username |
 | `SMTP_PASS` | SMTP password |
 | `FRONTEND_URL` | Frontend URL for CORS |
+| `VALID_QR_CODES` | Multiple QR codes for different locations (comma-separated) |
+| `ENABLE_AUTO_CHECKOUT` | Set to `true` to enable auto-checkout cron job in dev |
 
 ## Creating Admin User
 
@@ -167,9 +169,45 @@ node -e "require('bcrypt').hash('your-password', 10).then(h => console.log(h))"
 
 ## QR Code Setup
 
-1. Generate a QR code containing the value from `VALID_QR_CODE` environment variable
+1. Generate a QR code containing the value from `VALID_QR_CODES` environment variable
 2. Default is: `QRCHEK-2024-COMPANY`
-3. Print and place at your location for employees to scan
+3. For multiple locations, use comma-separated values: `QRCHEK-CAFE1,QRCHEK-CAFE2`
+4. Print and place at your location(s) for employees to scan
+
+## Features
+
+### Auto-Checkout (8 PM)
+The system automatically checks out employees who forgot to scan their departure at 8:00 PM daily.
+- Auto-generated departures are marked with "pending confirmation"
+- Employees see a prompt to confirm their departure when opening the app
+- Admins can see missing departures and pending confirmations in the dashboard
+
+### Offline Mode
+The mobile app works offline:
+- Scans are queued when offline
+- Automatically synced when back online
+- Shows pending scan count in the header
+
+### Token Refresh
+Tokens are automatically refreshed when they expire, keeping users logged in seamlessly.
+
+### Database Backups
+Run backup scripts to export and verify database:
+```bash
+cd server
+npm run backup                        # Create backup
+npm run restore <file>                # Restore from backup
+npm run verify-backup <file>          # Verify backup against DB
+```
+
+### Health Monitoring
+Enhanced health endpoints for monitoring:
+- `GET /api/health` - Full health check
+- `GET /api/health/ping` - Simple ping
+- `GET /api/health/ready` - Readiness check
+- `GET /api/health/live` - Liveness check
+
+See [MONITORING.md](MONITORING.md) for detailed monitoring setup.
 
 ## Mobile App Builds
 

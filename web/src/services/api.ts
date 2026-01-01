@@ -49,6 +49,25 @@ export interface Employee {
   month: EmployeeStats;
 }
 
+export interface MissingDeparture {
+  id: string;
+  name: string;
+  email: string;
+  hourlyRate: number;
+  lastArrival: string;
+  status: 'missing';
+}
+
+export interface PendingConfirmation {
+  id: string;
+  employeeId: string;
+  employeeName: string;
+  email: string;
+  hourlyRate: number;
+  departureTime: string;
+  status: 'pending_confirmation';
+}
+
 export interface Stats {
   employees: {
     total: number;
@@ -116,6 +135,21 @@ export const adminAPI = {
     if (type) params.append('type', type);
     if (params.toString()) url += `?${params.toString()}`;
     return url;
+  },
+  
+  getMissingDepartures: async (): Promise<MissingDeparture[]> => {
+    const response = await api.get('/api/admin/missing-departures');
+    return response.data;
+  },
+  
+  getPendingConfirmations: async (): Promise<PendingConfirmation[]> => {
+    const response = await api.get('/api/admin/pending-confirmations');
+    return response.data;
+  },
+  
+  triggerAutoCheckout: async (): Promise<{ success: boolean; processed: number; employees: string[] }> => {
+    const response = await api.post('/api/admin/auto-checkout');
+    return response.data;
   }
 };
 

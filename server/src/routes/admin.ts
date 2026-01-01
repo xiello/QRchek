@@ -3,10 +3,13 @@ import {
   readEmployees, 
   readAttendance, 
   updateEmployee,
-  findEmployeeById
+  findEmployeeById,
+  findEmployeesWithOpenArrivals,
+  getPendingConfirmations
 } from '../models/attendance';
 import { authenticateToken, requireAdmin } from '../middleware/admin';
 import { AttendanceRecord } from '../types/attendance';
+import { triggerAutoCheckout } from '../services/autoCheckout';
 
 const router = express.Router();
 
@@ -356,6 +359,74 @@ router.get('/export', async (req, res) => {
     res.send(csv);
   } catch (error) {
     console.error('Error exporting:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// GET /api/admin/missing-departures - Get employees with missing departures (open arrivals)
+router.get('/missing-departures', async (req, res) => {
+  try {
+    const employees = await findEmployeesWithOpenArrivals();
+    const allEmployees = await readEmployees();
+    
+    // Add additional info for each employee
+    const result = employees.map(emp => {
+      const employeeData = allEmployees.find(e => e.id === emp.id);
+      return {
+        id: emp.id,
+        name: emp.name,
+        email: emp.email,
+        hourlyRate: employeeData?.hourlyRate || 5,
+        lastArrival: emp.lastArrival,
+        status: 'missing' // Missing departure (before 8pm auto-checkout)
+      };
+    });
+    
+    res.json(result);
+  } catch (error) {
+    console.error('Error fetching missing departures:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// GET /api/admin/pending-confirmations - Get auto-checked out departures waiting for confirmation
+router.get('/pending-confirmations', async (req, res) => {
+  try {
+    const pendingRecords = await getPendingConfirmations();
+    const allEmployees = await readEmployees();
+    
+    const result = pendingRecords.map(record => {
+      const employee = allEmployees.find(e => e.id === record.employeeId);
+      return {
+        id: record.id,
+        employeeId: record.employeeId,
+        employeeName: record.employeeName,
+        email: employee?.email || '',
+        hourlyRate: employee?.hourlyRate || 5,
+        departureTime: record.timestamp,
+        status: 'pending_confirmation' // After 8pm auto-checkout, waiting for employee confirmation
+      };
+    });
+    
+    res.json(result);
+  } catch (error) {
+    console.error('Error fetching pending confirmations:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// POST /api/admin/auto-checkout - Manually trigger auto-checkout (for testing)
+router.post('/auto-checkout', async (req, res) => {
+  try {
+    const result = await triggerAutoCheckout();
+    res.json({
+      success: true,
+      message: `Auto-checkout completed. Processed ${result.processed} employees.`,
+      processed: result.processed,
+      employees: result.employees
+    });
+  } catch (error) {
+    console.error('Error triggering auto-checkout:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });

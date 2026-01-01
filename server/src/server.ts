@@ -5,6 +5,8 @@ import path from 'path';
 import authRoutes from './routes/auth';
 import attendanceRoutes from './routes/attendance';
 import adminRoutes from './routes/admin';
+import healthRoutes from './routes/health';
+import { startAutoCheckoutJob } from './services/autoCheckout';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -30,7 +32,7 @@ console.log('Environment:', isProduction ? 'production' : 'development');
 console.log('PORT:', PORT);
 console.log('DATABASE_URL:', process.env.DATABASE_URL ? 'SET' : '❌ NOT SET');
 console.log('JWT_SECRET:', process.env.JWT_SECRET ? 'SET' : '❌ NOT SET');
-console.log('VALID_QR_CODE:', process.env.VALID_QR_CODE ? 'SET' : '❌ NOT SET');
+console.log('VALID_QR_CODES:', process.env.VALID_QR_CODES || process.env.VALID_QR_CODE ? 'SET' : '❌ NOT SET');
 console.log('='.repeat(50));
 
 // Middleware
@@ -46,16 +48,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/attendance', attendanceRoutes);
 app.use('/api/admin', adminRoutes);
-
-// Health check
-app.get('/api/health', (req, res) => {
-  res.json({ 
-    status: 'ok', 
-    message: 'AMC Tvoj Coffeeshop API is running',
-    timestamp: new Date().toISOString(),
-    database: process.env.DATABASE_URL ? 'configured' : 'NOT CONFIGURED'
-  });
-});
+app.use('/api/health', healthRoutes);
 
 // Serve static files in production
 if (isProduction) {
@@ -73,4 +66,11 @@ if (isProduction) {
 
 app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
+  
+  // Start the auto-checkout cron job
+  if (isProduction || process.env.ENABLE_AUTO_CHECKOUT === 'true') {
+    startAutoCheckoutJob();
+  } else {
+    console.log('⏭️  Auto-checkout job disabled (set ENABLE_AUTO_CHECKOUT=true to enable in dev)');
+  }
 });

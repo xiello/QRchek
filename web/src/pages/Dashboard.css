@@ -581,6 +581,75 @@
   cursor: pointer;
 }
 
+/* Departure Alerts */
+.departure-alert {
+  background: var(--amc-surface);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  border-left: 4px solid;
+}
+
+.departure-alert.missing {
+  border-left-color: #E31B23;
+  background: rgba(227, 27, 35, 0.1);
+}
+
+.departure-alert.pending {
+  border-left-color: #ff9800;
+  background: rgba(255, 152, 0, 0.1);
+}
+
+.departure-alert .alert-icon {
+  font-size: 32px;
+}
+
+.departure-alert .alert-content {
+  flex: 1;
+}
+
+.departure-alert .alert-content strong {
+  display: block;
+  font-size: 16px;
+  color: var(--amc-text);
+  margin-bottom: 4px;
+}
+
+.departure-alert .alert-content p {
+  color: var(--amc-text-secondary);
+  font-size: 14px;
+  margin: 0 0 12px;
+}
+
+.departure-alert .alert-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.departure-alert .alert-item {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.departure-alert .alert-item .item-name {
+  font-weight: 600;
+  color: var(--amc-text);
+  font-size: 14px;
+}
+
+.departure-alert .alert-item .item-time {
+  color: var(--amc-text-secondary);
+  font-size: 12px;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .dashboard {

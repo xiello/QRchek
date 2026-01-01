@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AttendanceRecord } from '../types/attendance';
-import { attendanceAPI, adminAPI, authAPI, Employee, Stats } from '../services/api';
+import { attendanceAPI, adminAPI, authAPI, Employee, Stats, MissingDeparture, PendingConfirmation } from '../services/api';
 import AttendanceList from '../components/AttendanceList';
 import EmployeeFilter from '../components/EmployeeFilter';
 import './Dashboard.css';
@@ -67,6 +67,8 @@ export default function Dashboard() {
   const [selectedEmployee, setSelectedEmployee] = useState<string | null>(null);
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [stats, setStats] = useState<Stats | null>(null);
+  const [missingDepartures, setMissingDepartures] = useState<MissingDeparture[]>([]);
+  const [pendingConfirmations, setPendingConfirmations] = useState<PendingConfirmation[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -111,14 +113,18 @@ export default function Dashboard() {
   const loadData = async () => {
     try {
       setError(null);
-      const [attendanceData, statsData, employeesData] = await Promise.all([
+      const [attendanceData, statsData, employeesData, missingData, pendingData] = await Promise.all([
         attendanceAPI.getAllAttendance(),
         adminAPI.getStats(),
-        adminAPI.getEmployees()
+        adminAPI.getEmployees(),
+        adminAPI.getMissingDepartures(),
+        adminAPI.getPendingConfirmations()
       ]);
       setRecords(attendanceData);
       setStats(statsData);
       setEmployees(employeesData);
+      setMissingDepartures(missingData);
+      setPendingConfirmations(pendingData);
       console.log('Loaded employees:', employeesData.map(e => ({ name: e.name, emailVerified: e.emailVerified })));
       applyFilter(attendanceData, selectedEmployee);
     } catch (err: any) {
@@ -302,6 +308,48 @@ export default function Dashboard() {
               <div className="pending-alert">
                 <strong>{stats.employees.pending} zamestnancov čaká na overenie</strong>
                 <button onClick={() => setActiveTab('employees')}>Zobraziť</button>
+              </div>
+            )}
+            
+            {/* Missing Departures Alert */}
+            {missingDepartures.length > 0 && (
+              <div className="departure-alert missing">
+                <div className="alert-icon">⚠️</div>
+                <div className="alert-content">
+                  <strong>Chýbajúce odchody</strong>
+                  <p>{missingDepartures.length} zamestnanec(ov) sa neodhlásil</p>
+                  <div className="alert-list">
+                    {missingDepartures.map(emp => (
+                      <div key={emp.id} className="alert-item">
+                        <span className="item-name">{emp.name}</span>
+                        <span className="item-time">
+                          Príchod: {new Date(emp.lastArrival).toLocaleTimeString('sk-SK', { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {/* Pending Confirmations Alert */}
+            {pendingConfirmations.length > 0 && (
+              <div className="departure-alert pending">
+                <div className="alert-icon">⏳</div>
+                <div className="alert-content">
+                  <strong>Čaká na potvrdenie</strong>
+                  <p>{pendingConfirmations.length} auto-odhlásení čaká na potvrdenie</p>
+                  <div className="alert-list">
+                    {pendingConfirmations.map(conf => (
+                      <div key={conf.id} className="alert-item">
+                        <span className="item-name">{conf.employeeName}</span>
+                        <span className="item-time">
+                          Odchod: {new Date(conf.departureTime).toLocaleTimeString('sk-SK', { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             )}
             <div className="stats-section">
