@@ -1,0 +1,51 @@
+{
+  "expo": {
+    "name": "QRchek",
+    "slug": "qrchek",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "icon": "./assets/icon.png",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+    "bundleIdentifier": "com.qrchek.app",
+      "icon": "./assets/icon.png",
+      "infoPlist": {
+        "NSCameraUsageDescription": "QRchek potrebuje prístup ku kamere na skenovanie QR kódov pre sledovanie dochádzky."
+      }
+    },
+    "android": {
+      "package": "com.qrchek.app",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#1A1A1A"
+      },
+      "permissions": [
+        "CAMERA",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "QRchek potrebuje prístup ku kamere na skenovanie QR kódov."
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "1ed75b76-d73b-42f6-8910-cd3928c38d13"
+      },
+      "apiUrl": "https://your-app.up.railway.app"
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    }
+  }
+}

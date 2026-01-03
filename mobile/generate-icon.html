@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QRchek Icon Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1A1A1A;
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            background: #242424;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 600px;
+        }
+        canvas {
+            background: #1A1A1A;
+            border: 2px solid #333;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        button {
+            background: #3B82F6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #2563EB;
+        }
+        .instructions {
+            margin-top: 20px;
+            padding: 15px;
+            background: #2E2E2E;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📱 QRchek Icon Generator</h1>
+        <p>This will create a 1024x1024 icon for your app</p>
+        
+        <canvas id="iconCanvas" width="1024" height="1024"></canvas>
+        
+        <div>
+            <button onclick="generateIcon()">Generate Icon</button>
+            <button onclick="downloadIcon()">Download Icon</button>
+        </div>
+        
+        <div class="instructions">
+            <strong>Instructions:</strong><br>
+            1. Click "Generate Icon" to create the icon<br>
+            2. Click "Download Icon" to save it<br>
+            3. Save the file as <code>icon.png</code> in <code>mobile/assets/</code> folder<br>
+            4. Rebuild your app to see the new icon
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('iconCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        function generateIcon() {
+            // Clear canvas
+            ctx.fillStyle = '#1A1A1A';
+            ctx.fillRect(0, 0, 1024, 1024);
+            
+            // Draw QRchek text logo
+            const centerX = 512;
+            const centerY = 512;
+            
+            // Background circle (optional)
+            ctx.fillStyle = '#242424';
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 400, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Draw "QR" in blue
+            ctx.fillStyle = '#3B82F6';
+            ctx.font = 'bold 260px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('QR', centerX - 80, centerY);
+            
+            // Draw "chek" in white
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 220px Arial';
+            ctx.fillText('chek', centerX + 200, centerY);
+        }
+        
+        function downloadIcon() {
+            const link = document.createElement('a');
+            link.download = 'icon.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        // Generate on load
+        window.onload = generateIcon;
+    </script>
+</body>
+</html>
+
