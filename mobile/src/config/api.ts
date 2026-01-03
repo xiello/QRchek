@@ -7,7 +7,7 @@ const getEnvApiUrl = (): string | undefined => {
 };
 
 const DEV_LOCAL_IP = 'http://192.168.0.111:3001';
-const FALLBACK_PRODUCTION_URL = 'https://your-app.up.railway.app';
+const FALLBACK_PRODUCTION_URL = 'https://web-production-65f2b.up.railway.app';
 
 export const getApiUrl = (): string => {
   const envUrl = getEnvApiUrl();

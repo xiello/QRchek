@@ -42,7 +42,7 @@
       "eas": {
         "projectId": "1ed75b76-d73b-42f6-8910-cd3928c38d13"
       },
-      "apiUrl": "https://your-app.up.railway.app"
+      "apiUrl": "https://web-production-65f2b.up.railway.app"
     },
     "runtimeVersion": {
       "policy": "sdkVersion"
