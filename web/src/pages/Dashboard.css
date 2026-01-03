@@ -1,17 +1,17 @@
-/* AMC Theme Variables */
+/* QRchek Theme Variables */
 :root {
-  --amc-red: #E31B23;
-  --amc-red-dark: #B8151B;
-  --amc-bg: #1A1A1A;
-  --amc-surface: #242424;
-  --amc-surface-light: #2E2E2E;
-  --amc-border: #333333;
-  --amc-border-light: #444444;
-  --amc-text: #FFFFFF;
-  --amc-text-secondary: #888888;
-  --amc-text-muted: #666666;
-  --amc-success: #4CAF50;
-  --amc-error: #F44336;
+  --brand-red: #3B82F6;
+  --brand-red-dark: #2563EB;
+  --brand-bg: #1A1A1A;
+  --brand-surface: #242424;
+  --brand-surface-light: #2E2E2E;
+  --brand-border: #333333;
+  --brand-border-light: #444444;
+  --brand-text: #FFFFFF;
+  --brand-text-secondary: #888888;
+  --brand-text-muted: #666666;
+  --brand-success: #4CAF50;
+  --brand-error: #F44336;
 }
 
 .dashboard {
@@ -19,7 +19,7 @@
   padding: 24px;
   max-width: 1200px;
   margin: 0 auto;
-  background: var(--amc-bg);
+  background: var(--brand-bg);
 }
 
 .dashboard.loading {
@@ -29,8 +29,8 @@
   align-items: center;
   min-height: 100vh;
   font-size: 16px;
-  color: var(--amc-text-secondary);
-  background: var(--amc-bg);
+  color: var(--brand-text-secondary);
+  background: var(--brand-bg);
 }
 
 /* Login Screen */
@@ -39,14 +39,14 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: var(--amc-bg);
+  background: var(--brand-bg);
 }
 
 .login-container {
-  background: var(--amc-surface);
+  background: var(--brand-surface);
   padding: 48px 40px;
   border-radius: 16px;
-  border: 1px solid var(--amc-border);
+  border: 1px solid var(--brand-border);
   width: 100%;
   max-width: 420px;
   text-align: center;
@@ -54,13 +54,13 @@
 
 .login-container h1 {
   margin-bottom: 8px;
-  color: var(--amc-text);
+  color: var(--brand-text);
   font-size: 32px;
   font-weight: 700;
 }
 
 .login-container p {
-  color: var(--amc-text-secondary);
+  color: var(--brand-text-secondary);
   margin-bottom: 32px;
 }
 
@@ -72,25 +72,25 @@
 
 .login-container input {
   padding: 16px;
-  border: 1px solid var(--amc-border);
+  border: 1px solid var(--brand-border);
   border-radius: 10px;
   font-size: 16px;
-  background: var(--amc-surface-light);
-  color: var(--amc-text);
+  background: var(--brand-surface-light);
+  color: var(--brand-text);
 }
 
 .login-container input::placeholder {
-  color: var(--amc-text-muted);
+  color: var(--brand-text-muted);
 }
 
 .login-container input:focus {
   outline: none;
-  border-color: var(--amc-red);
+  border-color: var(--brand-red);
 }
 
 .login-container button {
   padding: 16px;
-  background: var(--amc-red);
+  background: var(--brand-red);
   color: white;
   border: none;
   border-radius: 10px;
@@ -102,18 +102,18 @@
 }
 
 .login-container button:hover {
-  background: var(--amc-red-dark);
+  background: var(--brand-red-dark);
 }
 
 .login-container button:disabled {
-  background: var(--amc-text-muted);
+  background: var(--brand-text-muted);
   cursor: not-allowed;
 }
 
 .login-container .error-message {
   background: rgba(227, 27, 35, 0.15);
-  border: 1px solid var(--amc-red);
-  color: var(--amc-red);
+  border: 1px solid var(--brand-red);
+  color: var(--brand-red);
   padding: 12px;
   border-radius: 8px;
   margin-bottom: 0;
@@ -131,17 +131,17 @@
 }
 
 .login-logo-am {
-  color: var(--amc-text);
+  color: var(--brand-text);
 }
 
 .login-logo-c {
-  color: var(--amc-red);
+  color: var(--brand-red);
 }
 
 .login-logo-tagline {
   font-size: 12px;
   letter-spacing: 3px;
-  color: var(--amc-text-secondary);
+  color: var(--brand-text-secondary);
   margin-top: 4px;
 }
 
@@ -152,12 +152,12 @@
   justify-content: space-between;
   align-items: center;
   padding-bottom: 24px;
-  border-bottom: 1px solid var(--amc-border);
+  border-bottom: 1px solid var(--brand-border);
 }
 
 .header-left h1 {
   font-size: 28px;
-  color: var(--amc-text);
+  color: var(--brand-text);
   margin-bottom: 4px;
   display: flex;
   align-items: center;
@@ -165,23 +165,23 @@
 }
 
 .header-logo-am {
-  color: var(--amc-text);
+  color: var(--brand-text);
 }
 
 .header-logo-c {
-  color: var(--amc-red);
+  color: var(--brand-red);
 }
 
 .header-left .subtitle {
   font-size: 14px;
-  color: var(--amc-text-secondary);
+  color: var(--brand-text-secondary);
 }
 
 .header-right .logout-btn {
   padding: 10px 24px;
   background: transparent;
-  color: var(--amc-red);
-  border: 1px solid var(--amc-red);
+  color: var(--brand-red);
+  border: 1px solid var(--brand-red);
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
@@ -189,7 +189,7 @@
 }
 
 .header-right .logout-btn:hover {
-  background: var(--amc-red);
+  background: var(--brand-red);
   color: white;
 }
 
@@ -198,10 +198,10 @@
   display: flex;
   gap: 4px;
   margin-bottom: 32px;
-  background: var(--amc-surface);
+  background: var(--brand-surface);
   padding: 6px;
   border-radius: 12px;
-  border: 1px solid var(--amc-border);
+  border: 1px solid var(--brand-border);
 }
 
 .tabs button {
@@ -210,7 +210,7 @@
   background: transparent;
   border: none;
   font-size: 15px;
-  color: var(--amc-text-secondary);
+  color: var(--brand-text-secondary);
   cursor: pointer;
   border-radius: 8px;
   transition: all 0.2s;
@@ -218,13 +218,13 @@
 }
 
 .tabs button:hover {
-  color: var(--amc-text);
-  background: var(--amc-surface-light);
+  color: var(--brand-text);
+  background: var(--brand-surface-light);
 }
 
 .tabs button.active {
   color: white;
-  background: var(--amc-red);
+  background: var(--brand-red);
   font-weight: 600;
 }
 
@@ -235,7 +235,7 @@
 
 .error-message {
   background: rgba(227, 27, 35, 0.1);
-  border: 1px solid var(--amc-red);
+  border: 1px solid var(--brand-red);
   border-radius: 10px;
   padding: 16px 20px;
   margin-bottom: 24px;
@@ -245,13 +245,13 @@
 }
 
 .error-message p {
-  color: var(--amc-red);
+  color: var(--brand-red);
   margin: 0;
 }
 
 .error-message button {
   padding: 8px 16px;
-  background: var(--amc-red);
+  background: var(--brand-red);
   color: white;
   border: none;
   border-radius: 6px;
@@ -266,7 +266,7 @@
 
 .stats-section h2 {
   font-size: 18px;
-  color: var(--amc-text);
+  color: var(--brand-text);
   margin-bottom: 16px;
   font-weight: 600;
 }
@@ -278,16 +278,16 @@
 }
 
 .stat-card {
-  background: var(--amc-surface);
+  background: var(--brand-surface);
   padding: 24px;
   border-radius: 12px;
-  border: 1px solid var(--amc-border);
+  border: 1px solid var(--brand-border);
   text-align: center;
 }
 
 .stat-card.highlight {
-  background: var(--amc-red);
-  border-color: var(--amc-red);
+  background: var(--brand-red);
+  border-color: var(--brand-red);
 }
 
 .stat-card.highlight .stat-value,
@@ -298,13 +298,13 @@
 .stat-value {
   font-size: 32px;
   font-weight: bold;
-  color: var(--amc-text);
+  color: var(--brand-text);
   margin-bottom: 4px;
 }
 
 .stat-label {
   font-size: 11px;
-  color: var(--amc-text-secondary);
+  color: var(--brand-text-secondary);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -312,15 +312,15 @@
 /* Export Section */
 .export-section {
   margin-bottom: 32px;
-  background: var(--amc-surface);
+  background: var(--brand-surface);
   padding: 24px;
   border-radius: 12px;
-  border: 1px solid var(--amc-border);
+  border: 1px solid var(--brand-border);
 }
 
 .export-section h2 {
   font-size: 18px;
-  color: var(--amc-text);
+  color: var(--brand-text);
   margin-bottom: 20px;
   font-weight: 600;
 }
@@ -335,7 +335,7 @@
 
 .export-group h3 {
   font-size: 13px;
-  color: var(--amc-text-secondary);
+  color: var(--brand-text-secondary);
   margin-bottom: 12px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -349,9 +349,9 @@
 
 .export-buttons button {
   padding: 12px 20px;
-  background: var(--amc-surface-light);
-  color: var(--amc-text);
-  border: 1px solid var(--amc-border);
+  background: var(--brand-surface-light);
+  color: var(--brand-text);
+  border: 1px solid var(--brand-border);
   border-radius: 8px;
   cursor: pointer;
   font-weight: 500;
@@ -359,16 +359,16 @@
 }
 
 .export-buttons button:hover {
-  background: var(--amc-border);
+  background: var(--brand-border);
 }
 
 .export-buttons .summary-btn {
-  background: var(--amc-red);
-  border-color: var(--amc-red);
+  background: var(--brand-red);
+  border-color: var(--brand-red);
 }
 
 .export-buttons .summary-btn:hover {
-  background: var(--amc-red-dark);
+  background: var(--brand-red-dark);
 }
 
 /* Recent Activity */
@@ -378,15 +378,15 @@
 
 .recent-section h2 {
   font-size: 18px;
-  color: var(--amc-text);
+  color: var(--brand-text);
   margin-bottom: 16px;
   font-weight: 600;
 }
 
 .recent-list {
-  background: var(--amc-surface);
+  background: var(--brand-surface);
   border-radius: 12px;
-  border: 1px solid var(--amc-border);
+  border: 1px solid var(--brand-border);
   overflow: hidden;
 }
 
@@ -394,7 +394,7 @@
   display: flex;
   align-items: center;
   padding: 16px 20px;
-  border-bottom: 1px solid var(--amc-border);
+  border-bottom: 1px solid var(--brand-border);
 }
 
 .recent-item:last-child {
@@ -404,7 +404,7 @@
 .recent-item .name {
   flex: 1;
   font-weight: 500;
-  color: var(--amc-text);
+  color: var(--brand-text);
 }
 
 .recent-item .type {
@@ -419,30 +419,30 @@
 
 .recent-item.arrival .type {
   background: rgba(76, 175, 80, 0.15);
-  color: var(--amc-success);
+  color: var(--brand-success);
 }
 
 .recent-item.departure .type {
   background: rgba(227, 27, 35, 0.15);
-  color: var(--amc-red);
+  color: var(--brand-red);
 }
 
 .recent-item .time {
-  color: var(--amc-text-secondary);
+  color: var(--brand-text-secondary);
   font-size: 14px;
 }
 
 /* Employees Section */
 .employees-section {
-  background: var(--amc-surface);
+  background: var(--brand-surface);
   border-radius: 12px;
   padding: 24px;
-  border: 1px solid var(--amc-border);
+  border: 1px solid var(--brand-border);
 }
 
 .employees-section h2 {
   font-size: 20px;
-  color: var(--amc-text);
+  color: var(--brand-text);
   margin-bottom: 24px;
   font-weight: 600;
 }
@@ -456,45 +456,45 @@
 .employees-table td {
   padding: 14px 16px;
   text-align: left;
-  border-bottom: 1px solid var(--amc-border);
+  border-bottom: 1px solid var(--brand-border);
 }
 
 .employees-table th {
-  background: var(--amc-surface-light);
+  background: var(--brand-surface-light);
   font-weight: 600;
-  color: var(--amc-text-secondary);
+  color: var(--brand-text-secondary);
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .employees-table tr:hover td {
-  background: var(--amc-surface-light);
+  background: var(--brand-surface-light);
 }
 
 .rate-input {
   width: 80px;
   padding: 10px;
-  border: 1px solid var(--amc-border);
+  border: 1px solid var(--brand-border);
   border-radius: 6px;
   font-size: 14px;
-  background: var(--amc-surface-light);
-  color: var(--amc-text);
+  background: var(--brand-surface-light);
+  color: var(--brand-text);
   text-align: center;
 }
 
 .rate-input:focus {
   outline: none;
-  border-color: var(--amc-red);
+  border-color: var(--brand-red);
 }
 
 .emp-name {
   font-weight: 600;
-  color: var(--amc-text);
+  color: var(--brand-text);
 }
 
 .emp-email {
-  color: var(--amc-text-secondary);
+  color: var(--brand-text-secondary);
 }
 
 .payment-cell {
@@ -503,13 +503,13 @@
 
 .payment-cell .hours {
   font-size: 12px;
-  color: var(--amc-text-muted);
+  color: var(--brand-text-muted);
 }
 
 .payment-cell .payment {
   font-size: 16px;
   font-weight: 600;
-  color: var(--amc-red);
+  color: var(--brand-red);
 }
 
 .status-cell {
@@ -527,12 +527,12 @@
 
 .badge.admin {
   background: rgba(227, 27, 35, 0.15);
-  color: var(--amc-red);
+  color: var(--brand-red);
 }
 
 .badge.verified {
   background: rgba(76, 175, 80, 0.15);
-  color: var(--amc-success);
+  color: var(--brand-success);
 }
 
 .badge.pending {
@@ -542,7 +542,7 @@
 
 .verify-btn {
   padding: 8px 16px;
-  background: var(--amc-success);
+  background: var(--brand-success);
   color: white;
   border: none;
   border-radius: 6px;
@@ -573,7 +573,7 @@
 
 .pending-alert button {
   padding: 8px 16px;
-  background: var(--amc-red);
+  background: var(--brand-red);
   color: white;
   border: none;
   border-radius: 6px;
@@ -583,7 +583,7 @@
 
 /* Departure Alerts */
 .departure-alert {
-  background: var(--amc-surface);
+  background: var(--brand-surface);
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 20px;
@@ -594,8 +594,8 @@
 }
 
 .departure-alert.missing {
-  border-left-color: #E31B23;
-  background: rgba(227, 27, 35, 0.1);
+  border-left-color: var(--brand-red);
+  background: rgba(59, 130, 246, 0.1);
 }
 
 .departure-alert.pending {
@@ -614,12 +614,12 @@
 .departure-alert .alert-content strong {
   display: block;
   font-size: 16px;
-  color: var(--amc-text);
+  color: var(--brand-text);
   margin-bottom: 4px;
 }
 
 .departure-alert .alert-content p {
-  color: var(--amc-text-secondary);
+  color: var(--brand-text-secondary);
   font-size: 14px;
   margin: 0 0 12px;
 }
@@ -641,12 +641,12 @@
 
 .departure-alert .alert-item .item-name {
   font-weight: 600;
-  color: var(--amc-text);
+  color: var(--brand-text);
   font-size: 14px;
 }
 
 .departure-alert .alert-item .item-time {
-  color: var(--amc-text-secondary);
+  color: var(--brand-text-secondary);
   font-size: 12px;
 }
 

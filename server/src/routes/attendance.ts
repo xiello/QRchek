@@ -13,22 +13,12 @@ import {
   confirmAutoDeparture
 } from '../models/attendance';
 import jwt from 'jsonwebtoken';
+import { config } from '../config/env';
 
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
-// Valid QR codes - supports multiple codes for different cafe locations
-// Format: VALID_QR_CODES=QRCHEK-CAFE1,QRCHEK-CAFE2 (comma-separated)
-const getValidQRCodes = (): string[] => {
-  const codesEnv = process.env.VALID_QR_CODES || process.env.VALID_QR_CODE;
-  if (!codesEnv) {
-    return ['QRCHEK-2024-COMPANY']; // Default fallback
-  }
-  return codesEnv.split(',').map(code => code.trim()).filter(Boolean);
-};
-
-const VALID_QR_CODES = getValidQRCodes();
-console.log(`✅ Valid QR codes configured: ${VALID_QR_CODES.length} code(s)`);
+const VALID_QR_CODES = config.VALID_QR_CODES;
+console.log(`Valid QR codes configured: ${VALID_QR_CODES.length} code(s)`);
 
 // Cooldown period in milliseconds (1 minute)
 const SCAN_COOLDOWN_MS = 60 * 1000;
@@ -43,7 +33,7 @@ function authenticateToken(req: Request, res: Response, next: express.NextFuncti
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as { id: string; username: string; name: string };
+    const decoded = jwt.verify(token, config.JWT_SECRET) as { id: string; username: string; name: string };
     (req as any).user = decoded;
     next();
   } catch (error) {
@@ -115,8 +105,7 @@ router.post('/', authenticateToken, async (req, res) => {
   }
 });
 
-// GET /api/attendance - Get all attendance records
-router.get('/', async (req, res) => {
+router.get('/', authenticateToken, async (req, res) => {
   try {
     const records = await readAttendance();
     res.json(records);
@@ -194,10 +183,18 @@ router.post('/confirm-departure/:recordId', authenticateToken, async (req, res) 
   }
 });
 
-// GET /api/attendance/:employeeId - Get records for specific employee
-router.get('/:employeeId', async (req, res) => {
+router.get('/:employeeId', authenticateToken, async (req, res) => {
   try {
+    const user = (req as any).user;
     const { employeeId } = req.params;
+    
+    const currentEmployee = await findEmployeeById(user.id);
+    const isAdmin = currentEmployee && currentEmployee.isAdmin === true;
+    
+    if (employeeId !== user.id && !isAdmin) {
+      return res.status(403).json({ error: 'You can only view your own records' });
+    }
+    
     const records = await getAttendanceByEmployee(employeeId);
     res.json(records);
   } catch (error) {

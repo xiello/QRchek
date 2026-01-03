@@ -2,8 +2,8 @@ import axios from 'axios';
 import { AttendanceRecord } from '../types/attendance';
 
 // In production, use relative URLs (same origin)
-// In development, use localhost
-const API_BASE_URL = import.meta.env.PROD ? '' : 'http://localhost:3000';
+// In development, use localhost with same port (web served from server)
+const API_BASE_URL = '';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -149,11 +149,6 @@ export const adminAPI = {
   
   triggerAutoCheckout: async (): Promise<{ success: boolean; processed: number; employees: string[] }> => {
     const response = await api.post('/api/admin/auto-checkout');
-    return response.data;
-  },
-  
-  resetPassword: async (employeeId: string, newPassword: string): Promise<{ success: boolean; message: string }> => {
-    const response = await api.post(`/api/admin/employees/${employeeId}/reset-password`, { newPassword });
     return response.data;
   }
 };

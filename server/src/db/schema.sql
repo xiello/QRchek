@@ -1,4 +1,4 @@
--- AMC Tvoj Coffeeshop - PostgreSQL Schema
+-- QRchek - PostgreSQL Schema
 -- Run this to initialize the database
 
 -- Employees table
@@ -33,15 +33,5 @@ CREATE INDEX IF NOT EXISTS idx_attendance_timestamp ON attendance(timestamp DESC
 CREATE INDEX IF NOT EXISTS idx_employees_email ON employees(email);
 CREATE INDEX IF NOT EXISTS idx_employees_verification_token ON employees(verification_token);
 
--- Insert default admin user (password: admin123)
--- The hash is for 'admin123' using bcrypt
-INSERT INTO employees (name, email, password_hash, is_admin, email_verified, hourly_rate)
-VALUES (
-    'Admin',
-    'admin@amc.sk',
-    '$2b$10$rOzJqQZQGqYNqYQZqYNqYuOzJqQZQGqYNqYQZqYNqYuOzJqQZQGqY',
-    TRUE,
-    TRUE,
-    10.00
-) ON CONFLICT (email) DO NOTHING;
+
 

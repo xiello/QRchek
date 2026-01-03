@@ -1,5 +1,4 @@
 import express from 'express';
-import bcrypt from 'bcrypt';
 import { 
   readEmployees, 
   readAttendance, 
@@ -11,8 +10,6 @@ import {
 import { authenticateToken, requireAdmin } from '../middleware/admin';
 import { AttendanceRecord } from '../types/attendance';
 import { triggerAutoCheckout } from '../services/autoCheckout';
-
-const SALT_ROUNDS = 10;
 
 const router = express.Router();
 
@@ -430,38 +427,6 @@ router.post('/auto-checkout', async (req, res) => {
     });
   } catch (error) {
     console.error('Error triggering auto-checkout:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// POST /api/admin/employees/:id/reset-password - Reset employee password
-router.post('/employees/:id/reset-password', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { newPassword } = req.body;
-
-    if (!newPassword || newPassword.length < 6) {
-      return res.status(400).json({ error: 'Password must be at least 6 characters long' });
-    }
-
-    const employee = await findEmployeeById(id);
-    if (!employee) {
-      return res.status(404).json({ error: 'Employee not found' });
-    }
-
-    // Hash the new password
-    const hashedPassword = await bcrypt.hash(newPassword, SALT_ROUNDS);
-
-    // Update employee password
-    await updateEmployee(id, { password: hashedPassword });
-
-    console.log(`✅ Admin reset password for employee: ${employee.email}`);
-    res.json({
-      success: true,
-      message: 'Password reset successfully'
-    });
-  } catch (error) {
-    console.error('Error resetting password:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });

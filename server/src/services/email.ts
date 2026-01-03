@@ -2,10 +2,13 @@ import { Resend } from 'resend';
 
 // Email configuration
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
-const FROM_EMAIL = process.env.FROM_EMAIL || 'AMC Tvoj Coffeeshop <onboarding@resend.dev>';
+const FROM_EMAIL = process.env.FROM_EMAIL || 'QRchek <onboarding@resend.dev>';
 
-// Initialize Resend client
-const resend = new Resend(RESEND_API_KEY);
+// Initialize Resend client only if API key is provided
+let resend: Resend | null = null;
+if (RESEND_API_KEY) {
+  resend = new Resend(RESEND_API_KEY);
+}
 
 // Get APP_URL dynamically - in production use RAILWAY_PUBLIC_DOMAIN or FRONTEND_URL
 const getAppUrl = (): string => {
@@ -41,10 +44,15 @@ export async function sendVerificationEmail(
       return true;
     }
 
+    if (!resend) {
+      console.log('⚠️ Email not configured - RESEND_API_KEY not set');
+      return false;
+    }
+
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: toEmail,
-      subject: 'Overte svoj účet - AMC Tvoj Coffeeshop',
+      subject: 'Overte svoj účet - QRchek',
       html: `
         <!DOCTYPE html>
         <html>
@@ -52,19 +60,19 @@ export async function sendVerificationEmail(
           <style>
             body { font-family: Arial, sans-serif; line-height: 1.6; color: #fff; margin: 0; padding: 0; background: #1a1a1a; }
             .container { max-width: 600px; margin: 0 auto; padding: 20px; background: #1a1a1a; }
-            .header { background: #242424; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; border-bottom: 3px solid #E31B23; }
+            .header { background: #242424; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; border-bottom: 3px solid #3B82F6; }
             .header h1 { margin: 0; }
-            .header span { color: #E31B23; }
+            .header span { color: #3B82F6; }
             .content { background: #242424; padding: 30px; border-radius: 0 0 8px 8px; color: #fff; }
-            .button { display: inline-block; background: #E31B23; color: white !important; padding: 12px 30px; text-decoration: none; border-radius: 6px; margin: 20px 0; font-weight: bold; }
+            .button { display: inline-block; background: #3B82F6; color: white !important; padding: 12px 30px; text-decoration: none; border-radius: 6px; margin: 20px 0; font-weight: bold; }
             .footer { text-align: center; color: #888; font-size: 12px; margin-top: 20px; }
-            a { color: #E31B23; }
+            a { color: #3B82F6; }
           </style>
         </head>
         <body>
           <div class="container">
             <div class="header">
-              <h1>AM<span>C</span> Tvoj Coffeeshop</h1>
+              <h1>QR<span>chek</span></h1>
             </div>
             <div class="content">
               <p>Ahoj ${name},</p>
@@ -73,12 +81,12 @@ export async function sendVerificationEmail(
                 <a href="${verificationLink}" class="button">Overiť Email</a>
               </p>
               <p>Alebo skopírujte tento odkaz do prehliadača:</p>
-              <p style="word-break: break-all; color: #E31B23;">${verificationLink}</p>
+              <p style="word-break: break-all; color: #3B82F6;">${verificationLink}</p>
               <p>Odkaz je platný 24 hodín.</p>
               <p>Ak ste si nevytvorili účet, môžete tento email ignorovať.</p>
             </div>
             <div class="footer">
-              <p>&copy; ${new Date().getFullYear()} AMC Tvoj Coffeeshop. Všetky práva vyhradené.</p>
+              <p>&copy; ${new Date().getFullYear()} QRchek. Všetky práva vyhradené.</p>
             </div>
           </div>
         </body>
@@ -122,10 +130,15 @@ export async function sendPasswordResetEmail(
 
     console.log(`📧 Sending password reset email to ${toEmail} via Resend...`);
 
+    if (!resend) {
+      console.log('⚠️ Email not configured - RESEND_API_KEY not set');
+      return false;
+    }
+
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: toEmail,
-      subject: 'Obnovenie hesla - AMC Tvoj Coffeeshop',
+      subject: 'Obnovenie hesla - QRchek',
       html: `
         <!DOCTYPE html>
         <html>
@@ -133,20 +146,20 @@ export async function sendPasswordResetEmail(
           <style>
             body { font-family: Arial, sans-serif; line-height: 1.6; color: #fff; margin: 0; padding: 0; background: #1a1a1a; }
             .container { max-width: 600px; margin: 0 auto; padding: 20px; background: #1a1a1a; }
-            .header { background: #242424; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; border-bottom: 3px solid #E31B23; }
+            .header { background: #242424; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; border-bottom: 3px solid #3B82F6; }
             .header h1 { margin: 0; }
-            .header span { color: #E31B23; }
+            .header span { color: #3B82F6; }
             .content { background: #242424; padding: 30px; border-radius: 0 0 8px 8px; color: #fff; }
-            .button { display: inline-block; background: #E31B23; color: white !important; padding: 12px 30px; text-decoration: none; border-radius: 6px; margin: 20px 0; font-weight: bold; }
+            .button { display: inline-block; background: #3B82F6; color: white !important; padding: 12px 30px; text-decoration: none; border-radius: 6px; margin: 20px 0; font-weight: bold; }
             .footer { text-align: center; color: #888; font-size: 12px; margin-top: 20px; }
-            a { color: #E31B23; }
+            a { color: #3B82F6; }
             .warning { color: #ffcc00; }
           </style>
         </head>
         <body>
           <div class="container">
             <div class="header">
-              <h1>AM<span>C</span> Tvoj Coffeeshop</h1>
+              <h1>QRchek</h1>
             </div>
             <div class="content">
               <p>Ahoj ${name},</p>
@@ -156,12 +169,12 @@ export async function sendPasswordResetEmail(
                 <a href="${resetLink}" class="button">Obnoviť heslo</a>
               </p>
               <p>Alebo skopírujte tento odkaz do prehliadača:</p>
-              <p style="word-break: break-all; color: #E31B23;">${resetLink}</p>
+              <p style="word-break: break-all; color: #3B82F6;">${resetLink}</p>
               <p class="warning">⚠️ Odkaz je platný iba 1 hodinu.</p>
               <p>Ak ste o obnovenie hesla nepožiadali, ignorujte tento email.</p>
             </div>
             <div class="footer">
-              <p>&copy; ${new Date().getFullYear()} AMC Tvoj Coffeeshop. Všetky práva vyhradené.</p>
+              <p>&copy; ${new Date().getFullYear()} QRchek. Všetky práva vyhradené.</p>
             </div>
           </div>
         </body>
@@ -196,10 +209,15 @@ export async function sendWelcomeEmail(toEmail: string, name: string): Promise<b
       return true;
     }
 
+    if (!resend) {
+      console.log('⚠️ Email not configured - RESEND_API_KEY not set');
+      return false;
+    }
+
     const { data, error } = await resend.emails.send({
       from: FROM_EMAIL,
       to: toEmail,
-      subject: 'Vitajte v AMC Tvoj Coffeeshop - Váš účet je aktívny!',
+      subject: 'Vitajte v QRchek - Váš účet je aktívny!',
       html: `
         <!DOCTYPE html>
         <html>
@@ -207,9 +225,9 @@ export async function sendWelcomeEmail(toEmail: string, name: string): Promise<b
           <style>
             body { font-family: Arial, sans-serif; line-height: 1.6; color: #fff; margin: 0; padding: 0; background: #1a1a1a; }
             .container { max-width: 600px; margin: 0 auto; padding: 20px; background: #1a1a1a; }
-            .header { background: #242424; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; border-bottom: 3px solid #E31B23; }
+            .header { background: #242424; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; border-bottom: 3px solid #3B82F6; }
             .header h1 { margin: 0; }
-            .header span { color: #E31B23; }
+            .header span { color: #3B82F6; }
             .content { background: #242424; padding: 30px; border-radius: 0 0 8px 8px; color: #fff; }
             .footer { text-align: center; color: #888; font-size: 12px; margin-top: 20px; }
             ul { color: #fff; }
@@ -219,7 +237,7 @@ export async function sendWelcomeEmail(toEmail: string, name: string): Promise<b
         <body>
           <div class="container">
             <div class="header">
-              <h1>AM<span>C</span> Tvoj Coffeeshop</h1>
+              <h1>QR<span>chek</span></h1>
             </div>
             <div class="content">
               <div class="checkmark">✓</div>
@@ -234,7 +252,7 @@ export async function sendWelcomeEmail(toEmail: string, name: string): Promise<b
               <p>Ak máte akékoľvek otázky, kontaktujte svojho manažéra.</p>
             </div>
             <div class="footer">
-              <p>&copy; ${new Date().getFullYear()} AMC Tvoj Coffeeshop. Všetky práva vyhradené.</p>
+            <p>&copy; ${new Date().getFullYear()} QRchek. Všetky práva vyhradené.</p>
             </div>
           </div>
         </body>

@@ -1,17 +1,17 @@
 .attendance-list {
-  background: var(--amc-surface);
+  background: var(--brand-surface);
   border-radius: 12px;
   overflow: hidden;
-  border: 1px solid var(--amc-border);
+  border: 1px solid var(--brand-border);
 }
 
 .attendance-list.empty {
   padding: 40px;
   text-align: center;
-  color: var(--amc-text-secondary);
-  background: var(--amc-surface);
+  color: var(--brand-text-secondary);
+  background: var(--brand-surface);
   border-radius: 12px;
-  border: 1px solid var(--amc-border);
+  border: 1px solid var(--brand-border);
 }
 
 .attendance-list.empty p {
@@ -25,15 +25,15 @@
 }
 
 .attendance-list thead {
-  background-color: var(--amc-surface-light);
+  background-color: var(--brand-surface-light);
 }
 
 .attendance-list th {
   padding: 16px;
   text-align: left;
   font-weight: 600;
-  color: var(--amc-text-secondary);
-  border-bottom: 1px solid var(--amc-border);
+  color: var(--brand-text-secondary);
+  border-bottom: 1px solid var(--brand-border);
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -41,12 +41,12 @@
 
 .attendance-list td {
   padding: 16px;
-  border-bottom: 1px solid var(--amc-border);
-  color: var(--amc-text);
+  border-bottom: 1px solid var(--brand-border);
+  color: var(--brand-text);
 }
 
 .attendance-list tbody tr:hover {
-  background-color: var(--amc-surface-light);
+  background-color: var(--brand-surface-light);
 }
 
 .attendance-list tbody tr:last-child td {
@@ -55,7 +55,7 @@
 
 .employee-name {
   font-weight: 500;
-  color: var(--amc-text);
+  color: var(--brand-text);
 }
 
 .type-badge {
@@ -70,16 +70,16 @@
 
 .type-badge.arrival {
   background-color: rgba(76, 175, 80, 0.15);
-  color: var(--amc-success);
+  color: var(--brand-success);
 }
 
 .type-badge.departure {
   background-color: rgba(227, 27, 35, 0.15);
-  color: var(--amc-red);
+  color: var(--brand-red);
 }
 
 .time {
   font-weight: 500;
-  color: var(--amc-text);
+  color: var(--brand-text);
 }
 

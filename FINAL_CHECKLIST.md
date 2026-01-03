@@ -2,7 +2,7 @@
 
 ## ✅ Completed Features
 
-### Mobile App (AMCheck)
+### Mobile App (QRchek)
 - ✅ User registration with email/password
 - ✅ Admin verification system (no email verification needed)
 - ✅ Login/logout functionality
@@ -11,7 +11,7 @@
 - ✅ Manual edit of attendance type
 - ✅ Attendance history view
 - ✅ Admin-only UI (hides scanner/history for admins)
-- ✅ Dark theme with AMC branding
+- ✅ Dark theme with blue branding
 - ✅ Slovak language throughout
 - ✅ Anti-double-scan protection (5-minute cooldown)
 - ✅ Network error handling
@@ -27,7 +27,7 @@
 - ✅ CSV export (detailed & summary)
 - ✅ Attendance records view
 - ✅ Employee filtering
-- ✅ Dark theme with AMC branding
+- ✅ Dark theme with blue branding
 - ✅ Slovak language throughout
 - ✅ Delete attendance records
 - ✅ Pending employees alert

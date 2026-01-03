@@ -98,8 +98,8 @@ eas build --platform ios --profile preview
 ## Current iOS Configuration
 
 Your app is configured with:
-- **Bundle ID:** `com.amc.coffeeshop`
-- **App Name:** "AMC Tvoj Coffeeshop"
+- **Bundle ID:** `com.qrchek.app`
+- **App Name:** "QRchek"
 - **Version:** 1.0.0
 - **Camera Permission:** Already configured for QR scanning
 
@@ -152,9 +152,9 @@ eas submit --platform ios
 - Run: `eas credentials` to check
 
 ### "Bundle ID already exists"
-- Your bundle ID `com.amc.coffeeshop` might be taken
+- Your bundle ID `com.qrchek.app` might be taken
 - Change it in `mobile/app.json` → `ios.bundleIdentifier`
-- Use something unique like: `com.yourcompany.amccoffeeshop`
+- Use something unique like: `com.yourcompany.qrchek`
 
 ### Build fails with certificate errors
 - EAS will try to auto-generate credentials

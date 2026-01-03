@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# AMC Tvoj Coffeeshop - Mobile App Build Script
+# QRchek - Mobile App Build Script
 
-echo "🚀 Building AMC Tvoj Coffeeshop Mobile App"
+echo "🚀 Building QRchek Mobile App"
 echo ""
 
 # Get the absolute path to the script directory

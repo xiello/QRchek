@@ -9,9 +9,9 @@ import {
   updateEmployee
 } from '../models/attendance';
 import { sendVerificationEmail, sendWelcomeEmail, sendPasswordResetEmail } from '../services/email';
+import { config } from '../config/env';
 
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 const SALT_ROUNDS = 10;
 
 // POST /api/auth/register - Register new employee
@@ -250,8 +250,8 @@ router.get('/reset-password/:token', async (req, res) => {
           <style>
             body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background: #1a1a1a; color: #fff; }
             .container { text-align: center; padding: 40px; background: #242424; border-radius: 12px; border: 1px solid #333; max-width: 400px; margin: 20px; }
-            h1 { color: #E31B23; }
-            a { color: #E31B23; }
+            h1 { color: #3B82F6; }
+            a { color: #3B82F6; }
           </style>
         </head>
         <body>
@@ -271,18 +271,18 @@ router.get('/reset-password/:token', async (req, res) => {
     <!DOCTYPE html>
     <html>
     <head>
-      <title>Obnovenie hesla - AMC Tvoj Coffeeshop</title>
+      <title>Obnovenie hesla - QRchek</title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <style>
         body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background: #1a1a1a; color: #fff; }
         .container { text-align: center; padding: 40px; background: #242424; border-radius: 12px; border: 1px solid #333; max-width: 400px; margin: 20px; width: 100%; }
         h1 { color: #fff; margin-bottom: 10px; }
-        h1 span { color: #E31B23; }
+        h1 span { color: #3B82F6; }
         .subtitle { color: #888; margin-bottom: 30px; }
         input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #444; border-radius: 6px; background: #1a1a1a; color: #fff; box-sizing: border-box; font-size: 16px; }
-        input:focus { outline: none; border-color: #E31B23; }
-        button { width: 100%; padding: 14px; background: #E31B23; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 10px; }
-        button:hover { background: #c41820; }
+        input:focus { outline: none; border-color: #3B82F6; }
+        button { width: 100%; padding: 14px; background: #3B82F6; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 10px; }
+        button:hover { background: #2563EB; }
         button:disabled { background: #666; cursor: not-allowed; }
         .message { padding: 12px; border-radius: 6px; margin-top: 15px; }
         .error { background: #ff000033; color: #ff6b6b; }
@@ -291,7 +291,7 @@ router.get('/reset-password/:token', async (req, res) => {
     </head>
     <body>
       <div class="container">
-        <h1>AM<span>C</span> Tvoj Coffeeshop</h1>
+        <h1>QR<span>chek</span></h1>
         <p class="subtitle">Obnovenie hesla</p>
         <form id="resetForm">
           <input type="password" id="password" placeholder="Nové heslo" required minlength="6">
@@ -387,7 +387,7 @@ router.post('/login', async (req, res) => {
 
     const token = jwt.sign(
       { id: employee.id, email: employee.email, name: employee.name, isAdmin: employee.isAdmin || false },
-      JWT_SECRET,
+      config.JWT_SECRET,
       { expiresIn: '30d' }
     );
 
@@ -407,10 +407,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// POST /api/auth/refresh - Refresh JWT token
 router.post('/refresh', async (req, res) => {
-  console.log('🔄 Token refresh request received');
-  
   try {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
@@ -419,23 +416,13 @@ router.post('/refresh', async (req, res) => {
       return res.status(401).json({ error: 'Token is required' });
     }
 
-    // Verify the current token (even if expired, we just need to decode it)
     let decoded: { id: string; email: string; name: string; isAdmin: boolean };
     try {
-      decoded = jwt.verify(token, JWT_SECRET) as any;
+      decoded = jwt.verify(token, config.JWT_SECRET, { ignoreExpiration: true }) as any;
     } catch (error: any) {
-      // If the token is expired, try to decode it anyway
-      if (error.name === 'TokenExpiredError') {
-        decoded = jwt.decode(token) as any;
-        if (!decoded) {
-          return res.status(401).json({ error: 'Invalid token' });
-        }
-      } else {
-        return res.status(401).json({ error: 'Invalid token' });
-      }
+      return res.status(401).json({ error: 'Invalid token' });
     }
 
-    // Verify the user still exists and is verified
     const employee = await findEmployeeByEmail(decoded.email);
     if (!employee) {
       return res.status(401).json({ error: 'User no longer exists' });
@@ -445,14 +432,12 @@ router.post('/refresh', async (req, res) => {
       return res.status(403).json({ error: 'Account is not verified' });
     }
 
-    // Generate new token
     const newToken = jwt.sign(
       { id: employee.id, email: employee.email, name: employee.name, isAdmin: employee.isAdmin || false },
-      JWT_SECRET,
+      config.JWT_SECRET,
       { expiresIn: '30d' }
     );
 
-    console.log('✅ Token refreshed for:', decoded.email);
     res.json({
       token: newToken,
       employee: {
@@ -463,7 +448,7 @@ router.post('/refresh', async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('❌ Token refresh error:', error);
+    console.error('Token refresh error:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });

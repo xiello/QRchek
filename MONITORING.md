@@ -1,4 +1,4 @@
-# AMC Tvoj Coffeeshop - Monitoring Guide
+# QRchek - Monitoring Guide
 
 ## Health Check Endpoints
 

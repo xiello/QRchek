@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { findEmployeeById } from '../models/attendance';
-
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+import { config } from '../config/env';
 
 export interface AuthenticatedRequest extends Request {
   user?: {
@@ -23,7 +22,7 @@ export function authenticateToken(req: AuthenticatedRequest, res: Response, next
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as { id: string; email: string; name: string; isAdmin?: boolean };
+    const decoded = jwt.verify(token, config.JWT_SECRET) as { id: string; email: string; name: string; isAdmin?: boolean };
     req.user = {
       id: decoded.id,
       email: decoded.email,

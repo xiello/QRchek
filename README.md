@@ -1,6 +1,6 @@
-# AMC Tvoj Coffeeshop - Attendance Tracker
+# QRchek - Attendance Tracker
 
-Employee attendance tracking system with QR code scanning.
+Unbranded employee attendance tracking system with QR code scanning.
 
 ## Architecture
 
@@ -24,36 +24,34 @@ Employee attendance tracking system with QR code scanning.
 └───────────────────────┘
 ```
 
-## Local Development
+## Local Development (single terminal)
 
 ### Prerequisites
 - Node.js 18+
 - PostgreSQL (optional for local dev)
 
-### 1. Install Dependencies
+### 1. Install dependencies once
 
 ```bash
-# Server
 cd server && npm install
-
-# Web Dashboard
 cd ../web && npm install
-
-# Mobile App
 cd ../mobile && npm install
 ```
 
-### 2. Start Development Servers
+### 2. Run API + Web in one terminal
 
 ```bash
-# Terminal 1: Server (uses JSON files for local dev)
-cd server && npm run dev
+cd server
+npm run dev:local
+```
 
-# Terminal 2: Web Dashboard
-cd web && npm run dev
+This builds the web app, copies it to `server/public`, and starts the API + static web from one process.
 
-# Terminal 3: Mobile App
-cd mobile && npx expo start
+### 3. Run mobile (separate, only when needed)
+
+```bash
+cd mobile
+npx expo start
 ```
 
 ## Railway Deployment
