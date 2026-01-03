@@ -231,6 +231,14 @@ export async function deleteAttendance(recordId: string): Promise<boolean> {
   return result.rowCount > 0;
 }
 
+export async function deleteEmployee(id: string): Promise<boolean> {
+  const result = await execute(`
+    DELETE FROM employees WHERE id = $1
+  `, [id]);
+  
+  return result.rowCount > 0;
+}
+
 // ==================== AUTO-CHECKOUT FUNCTIONS ====================
 
 /**

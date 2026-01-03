@@ -47,6 +47,11 @@ const sk = {
   pending: 'Čakajúci',
   verify: 'Overiť',
   pendingVerification: 'Čaká na overenie',
+  delete: 'Odstrániť',
+  confirmDelete: 'Naozaj chcete odstrániť tohto zamestnanca? Všetky jeho záznamy budú vymazané.',
+  deleteSuccess: 'Zamestnanec bol úspešne odstránený',
+  deleteError: 'Chyba pri odstraňovaní zamestnanca',
+  actions: 'Akcie',
   
   loading: 'Načítava sa...',
   retry: 'Skúsiť znova',
@@ -164,6 +169,20 @@ export default function Dashboard() {
     } catch (err) {
       console.error('Error verifying employee:', err);
       alert('Chyba pri overovaní zamestnanca');
+    }
+  };
+
+  const handleDeleteEmployee = async (empId: string, empName: string) => {
+    if (!confirm(`${sk.confirmDelete}\n\nZamestnanec: ${empName}`)) {
+      return;
+    }
+    try {
+      await adminAPI.deleteEmployee(empId);
+      await loadData();
+      alert(sk.deleteSuccess);
+    } catch (err: any) {
+      console.error('Error deleting employee:', err);
+      alert(err.response?.data?.error || sk.deleteError);
     }
   };
 
@@ -454,6 +473,7 @@ export default function Dashboard() {
                   <th>{sk.thisWeek}</th>
                   <th>{sk.thisMonth}</th>
                   <th>{sk.status}</th>
+                  <th>{sk.actions}</th>
                 </tr>
               </thead>
               <tbody>
@@ -501,6 +521,17 @@ export default function Dashboard() {
                           </div>
                         )}
                       </div>
+                    </td>
+                    <td>
+                      {!emp.isAdmin && (
+                        <button 
+                          className="delete-btn"
+                          onClick={() => handleDeleteEmployee(emp.id, emp.name)}
+                          title={sk.delete}
+                        >
+                          🗑️
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}

@@ -10,6 +10,7 @@
     "build:server": "tsc",
     "start": "NODE_ENV=production node dist/server.js",
     "migrate": "tsx src/db/migrate.ts",
+    "reset-admin": "tsx scripts/reset-admin.ts",
     "backup": "tsx scripts/backup-db.ts",
     "restore": "tsx scripts/restore-db.ts",
     "verify-backup": "tsx scripts/verify-backup.ts"

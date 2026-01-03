@@ -1,6 +1,62 @@
 # QRchek - Attendance Tracker
 
-Unbranded employee attendance tracking system with QR code scanning.
+Employee attendance tracking system with QR code scanning.
+
+## Quick Start (Local Development)
+
+### Prerequisites
+- Node.js 18+
+- PostgreSQL running locally
+
+### Step 1: Install Dependencies (one-time)
+
+```bash
+cd server && npm install
+cd ../web && npm install
+cd ../mobile && npm install
+```
+
+### Step 2: Configure Environment
+
+```bash
+cd server
+cp .env.example .env
+# Edit .env with your DATABASE_URL
+```
+
+### Step 3: Setup Database & Admin
+
+```bash
+cd server
+npm run migrate        # Create tables
+npm run reset-admin    # Create admin account
+```
+
+### Step 4: Run Everything (single terminal!)
+
+```bash
+cd server
+npm run dev:local
+```
+
+This builds the web dashboard and starts the API server on http://localhost:3001
+
+### Step 5: Login
+
+Open http://localhost:3001 and login with:
+- **Email:** `admin@example.com`
+- **Password:** `password123`
+
+### Step 6: Test with Expo Go (optional)
+
+```bash
+cd mobile
+npx expo start
+```
+
+Scan the QR code with your phone (same WiFi network required).
+
+---
 
 ## Architecture
 
@@ -22,36 +78,6 @@ Unbranded employee attendance tracking system with QR code scanning.
 ┌───────────┴───────────┐
 │    Mobile App (Expo)  │
 └───────────────────────┘
-```
-
-## Local Development (single terminal)
-
-### Prerequisites
-- Node.js 18+
-- PostgreSQL (optional for local dev)
-
-### 1. Install dependencies once
-
-```bash
-cd server && npm install
-cd ../web && npm install
-cd ../mobile && npm install
-```
-
-### 2. Run API + Web in one terminal
-
-```bash
-cd server
-npm run dev:local
-```
-
-This builds the web app, copies it to `server/public`, and starts the API + static web from one process.
-
-### 3. Run mobile (separate, only when needed)
-
-```bash
-cd mobile
-npx expo start
 ```
 
 ## Railway Deployment
@@ -146,7 +172,18 @@ eas build --platform ios      # For iOS
 
 ## Creating Admin User
 
-After deployment, create an admin user by running this SQL in your PostgreSQL database:
+Use the built-in reset script:
+
+```bash
+cd server
+npm run reset-admin
+```
+
+This creates/resets admin with:
+- **Email:** `admin@example.com`
+- **Password:** `password123`
+
+Alternatively, create manually via SQL:
 
 ```sql
 INSERT INTO employees (name, email, password_hash, is_admin, email_verified, hourly_rate)
@@ -160,7 +197,7 @@ VALUES (
 );
 ```
 
-To generate a bcrypt hash for your password, you can use:
+To generate a bcrypt hash:
 ```bash
 node -e "require('bcrypt').hash('your-password', 10).then(h => console.log(h))"
 ```

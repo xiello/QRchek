@@ -150,6 +150,11 @@ export const adminAPI = {
   triggerAutoCheckout: async (): Promise<{ success: boolean; processed: number; employees: string[] }> => {
     const response = await api.post('/api/admin/auto-checkout');
     return response.data;
+  },
+  
+  deleteEmployee: async (id: string): Promise<{ success: boolean; message: string }> => {
+    const response = await api.delete(`/api/admin/employees/${id}`);
+    return response.data;
   }
 };
 

@@ -5,7 +5,8 @@ import {
   updateEmployee,
   findEmployeeById,
   findEmployeesWithOpenArrivals,
-  getPendingConfirmations
+  getPendingConfirmations,
+  deleteEmployee
 } from '../models/attendance';
 import { authenticateToken, requireAdmin } from '../middleware/admin';
 import { AttendanceRecord } from '../types/attendance';
@@ -146,6 +147,38 @@ router.put('/employees/:id', async (req, res) => {
     });
   } catch (error) {
     console.error('Error updating employee:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// DELETE /api/admin/employees/:id - Delete an employee (non-admin only)
+router.delete('/employees/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const currentUser = (req as any).user;
+    
+    if (currentUser?.id === id) {
+      return res.status(400).json({ error: 'Cannot delete your own account' });
+    }
+    
+    const employee = await findEmployeeById(id);
+    if (!employee) {
+      return res.status(404).json({ error: 'Employee not found' });
+    }
+    
+    if (employee.isAdmin) {
+      return res.status(403).json({ error: 'Cannot delete admin accounts' });
+    }
+    
+    const deleted = await deleteEmployee(id);
+    if (!deleted) {
+      return res.status(500).json({ error: 'Failed to delete employee' });
+    }
+    
+    console.log(`🗑️ Admin deleted employee: ${employee.email}`);
+    res.json({ success: true, message: 'Employee deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting employee:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });

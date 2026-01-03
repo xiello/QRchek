@@ -559,6 +559,22 @@
   transform: scale(1.05);
 }
 
+.delete-btn {
+  background: transparent;
+  border: 1px solid var(--brand-error);
+  color: var(--brand-error);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.delete-btn:hover {
+  background: var(--brand-error);
+  color: white;
+}
+
 .pending-alert {
   background: rgba(255, 193, 7, 0.15);
   border: 1px solid #FFC107;
